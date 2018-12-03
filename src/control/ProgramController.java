@@ -1,7 +1,6 @@
 package control;
 
 import control.framework.UIController;
-import model.House;
 
 /**
  * Ein Objekt der Klasse ProgramController dient dazu das Programm zu steuern. Die updateProgram - Methode wird
@@ -29,10 +28,7 @@ public class ProgramController {
      * Diese Methode wird genau ein mal nach Programmstart aufgerufen.
      */
     public void startProgram(){
-        // Legt ein Objekt der Beispielklasse "House" an.
-        House house1 = new House();
-        // Weist das Objekt der Klasse UIController an die draw- und update-Methoden des übergebenen Objekts aufzurufen
-        uiController.drawObject(house1);
+
     }
 
     /**
