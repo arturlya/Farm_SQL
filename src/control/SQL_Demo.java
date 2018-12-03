@@ -7,7 +7,10 @@ import java.sql.*;
  */
 public class SQL_Demo {
 
+    private String name;
+
     public SQL_Demo(){
+        name = StaticData.farm;
         runDemo();
     }
 
@@ -20,40 +23,32 @@ public class SQL_Demo {
             // lösche die Tabelle, falls sie schon existiert
 
             try {
-                stmt.execute("DROP TABLE test_person;");
+                stmt.execute("DROP TABLE "+name+";");
             } catch (Exception e){
                 System.out.println("Tabelle nicht gelöscht.");
             }
 
             // Lege eine neue Tabelle (wirft Exception, falls Tabelle schon vorhanden)
             try {
-                stmt.execute("CREATE TABLE test_person (" +
-                        "pID int NOT NULL AUTO_INCREMENT," +
-                        "firstname varchar(255) NOT NULL," +
-                        "lastname varchar(255) NOT NULL," +
-                        "currentage int NOT NULL," +
-                        "PRIMARY KEY (pID)" +
+                stmt.execute("CREATE TABLE "+name+" (" +
+                        "kundenID int NOT NULL AUTO_INCREMENT,"+
+                        "kundenName varchar(255) NOT NULL,"+
+                        "kundenWunsch varchar (255) NOT NULL,"+
+                        "kundenGeld int NOT NULL,"+
+                        "PRIMARY KEY(kundenID)"+
                         ");");
                 } catch (Exception e){
                     System.out.println("Keine neue Tabelle angelegt.");
             }
 
             // Lege ein paar Datensätze in der Tabelle an (primary key wird ausgelassen wg. auto-inkrement => heißt aber man kann Leute auch doppelt anlegen)
-            stmt.execute("INSERT INTO test_person (firstname, lastname, currentage) " +
-                    "VALUES ('Peter', 'Pan', 14);");
-            stmt.execute("INSERT INTO test_person (firstname, lastname, currentage) " +
-                    "VALUES ('Jack', 'Ripperlein', 32);");
-            stmt.execute("INSERT INTO test_person (firstname, lastname, currentage) " +
-                    "VALUES ('Olaf', 'Steiner', 52);");
-            stmt.execute("INSERT INTO test_person (firstname, lastname, currentage) " +
-                    "VALUES ('Klaus', 'Kloppmann', 41);");
-            stmt.execute("INSERT INTO test_person (firstname, lastname, currentage) " +
-                    "VALUES ('Bese', 'Flor', 16);");
+
+
+            stmt.execute("Insert into "+name+" (kundenName,kundenWunsch,kundenGeld) VALUES ('Bernd','Semelblume',342)");
 
             // Gib die gesamte Tabelle test_person aus
-            ResultSet results = stmt.executeQuery("SELECT * FROM test_person;");
+            ResultSet results = stmt.executeQuery("SELECT * FROM "+name+";");
 
-            System.out.println("ID(primary key) - Vorname - Nachname - Alter");
             while(results.next()){
                 System.out.println(results.getString(1) + " - " +results.getString(2) + " - " + results.getString(3) + " - " + results.getString(4));
             }
