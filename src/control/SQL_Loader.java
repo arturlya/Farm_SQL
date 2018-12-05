@@ -16,7 +16,7 @@ public class SQL_Loader {
             Statement stmt = con.createStatement();
             try {
                 stmt.execute("DROP TABLE " + StaticData.farm + ";");
-                stmt.execute("DROP TABLE " + StaticData.kunde + ";");
+               // stmt.execute("DROP TABLE " + StaticData.kunde + ";");
                 stmt.execute("DROP TABLE " + StaticData.pflanze + ";");
                 stmt.execute("DROP TABLE " + StaticData.shop + ";");
                 stmt.execute("DROP TABLE " + StaticData.lager + ";");
@@ -28,26 +28,64 @@ public class SQL_Loader {
             }
 
             try {
+                /*
                 stmt.execute("CREATE TABLE "+StaticData.kunde+" (" +
                         "kundenID int NOT NULL AUTO_INCREMENT,"+
                         "kundenName varchar(255) NOT NULL,"+
                         "kundenWunsch varchar (255) NOT NULL,"+
+                        ","+
                         "kundenGeld int NOT NULL,"+
                         "PRIMARY KEY(kundenID)"+
+                        ");");*/
+                stmt.execute("CREATE TABLE "+StaticData.farm+" (" +
+                        "farmID int NOT NULL AUTO_INCREMENT,"+
+                        "farmGeld double NOT NULL,"+
+                        "farmName varchar(255) NOT NULL,"+
+                        "farmFelder int NOT NULL,"+
+                        "PRIMARY KEY(farmID)"+
                         ");");
                 stmt.execute("CREATE TABLE "+StaticData.pflanze+" (" +
                         "pflanzenID int NOT NULL AUTO_INCREMENT,"+
                         "pflanzenArt varchar(255) NOT NULL,"+
                         "wachstumsRate double NOT NULL,"+
                         "wachstum double NOT NULL,"+
-                        "PRIMARY KEY(pflanzenID)"+
+                        "feldBelegung int NOT NULL,"+
+                        "farmID int NOT NULL,"+
+                        "PRIMARY KEY(pflanzenID),"+
+                        "FOREIGN KEY(farmID) REFERENCES "+StaticData.farm+"(farmID)"+
                         ");");
-                stmt.execute("CREATE TABLE "+StaticData.farm+" (" +
-                        "farmID int NOT NULL AUTO_INCREMENT,"+
-                        "farmGeld varchar(255) NOT NULL,"+
+                stmt.execute("CREATE TABLE "+StaticData.tier+" (" +
+                        "tierID int NOT NULL AUTO_INCREMENT,"+
+                        "fleischArt varchar(255) NOT NULL,"+
+                        "besonderheiten varchar(255) NOT NULL,"+
                         "wachstumsRate double NOT NULL,"+
                         "wachstum double NOT NULL,"+
-                        "PRIMARY KEY(pflanzenID)"+
+                        "farmID int NOT NULL,"+
+                        "PRIMARY KEY(tierID),"+
+                        "FOREIGN KEY(farmID) REFERENCES "+StaticData.farm+"(farmID)"+
+                        ");");
+                stmt.execute("CREATE TABLE "+StaticData.lager+" (" +
+                        "lagerID int NOT NULL AUTO_INCREMENT,"+
+                        "lagerPlatz int NOT NULL,"+
+                        "belegterPlatz int NOT NULL,"+
+                        "farmID int NOT NULL,"+
+                        "PRIMARY KEY(lagerID),"+
+                        "FOREIGN KEY(farmID) REFERENCES "+StaticData.farm+"(farmID)"+
+                        ");");
+                stmt.execute("CREATE TABLE "+StaticData.shop+" (" +
+                        "kaufID int NOT NULL AUTO_INCREMENT,"+
+                        "entitaet double NOT NULL,"+
+                        "preis varchar(255) NOT NULL,"+
+                        "entitaetsArt int NOT NULL,"+
+                        "PRIMARY KEY(kaufID)"+
+                        ");");
+                stmt.execute("CREATE TABLE "+StaticData.mitarbieter+" (" +
+                        "mitarbeiterID int NOT NULL AUTO_INCREMENT,"+
+                        "job varchar(255) NOT NULL,"+
+                        "arbeitsplatz varchar(255) NOT NULL,"+
+                        "lohn double NOT NULL,"+
+                        "PRIMARY KEY(mitarbeiterID),"+
+                        "FOREIGN KEY(arbeitsplatz) "+StaticData.farm+"(farmID)"+
                         ");");
             } catch (Exception e){
                 System.out.println("Keine neue Tabelle angelegt.");
