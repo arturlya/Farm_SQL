@@ -7,7 +7,7 @@ import java.sql.Statement;
 public class SQL_Loader {
 
     public SQL_Loader(){
-
+        loadDatabase();
     }
 
     private void loadDatabase(){
@@ -22,6 +22,8 @@ public class SQL_Loader {
                 stmt.execute("DROP TABLE " + StaticData.lager + ";");
                 stmt.execute("DROP TABLE " + StaticData.mitarbieter + ";");
                 stmt.execute("DROP TABLE " + StaticData.tier + ";");
+                stmt.execute("DROP TABLE "+StaticData.mutationskammer+";");
+                stmt.execute("DROP TABLE "+StaticData.wird_gekreuzt+";");
 
             } catch (Exception e) {
                 System.out.println("Tabelle nicht gelöscht.");
@@ -87,6 +89,20 @@ public class SQL_Loader {
                         "PRIMARY KEY(mitarbeiterID),"+
                         "FOREIGN KEY(arbeitsplatz) "+StaticData.farm+"(farmID)"+
                         ");");
+            /*    stmt.execute("CREATE TABLE "+StaticData.mutationskammer+" (" +
+                        "mutationskammerID int NOT NULL AUTO_INCREMENT,"+
+                        "mutationskammern int NOT NULL,"+
+                        "farmName varchar(255) NOT NULL,"+
+                        "farmFelder int NOT NULL,"+
+                        "PRIMARY KEY(farmID)"+
+                        ");");
+                stmt.execute("CREATE TABLE "+StaticData.wird_gekreuzt+" (" +
+                        "kreuzungsID int NOT NULL AUTO_INCREMENT,"+
+                        "tier1ID double NOT NULL,"+
+                        "tier2ID varchar(255) NOT NULL,"+
+                        "mutationskammer int NOT NULL,"+
+                        "PRIMARY KEY(kreuzungsID)"+
+                        ");");*/
             } catch (Exception e){
                 System.out.println("Keine neue Tabelle angelegt.");
             }

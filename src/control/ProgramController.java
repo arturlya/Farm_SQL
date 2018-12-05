@@ -28,7 +28,8 @@ public class ProgramController {
      * Diese Methode wird genau ein mal nach Programmstart aufgerufen.
      */
     public void startProgram(){
-        new SQL_Demo();
+        //new SQL_Demo();
+        new SQL_Loader();
     }
 
     /**
