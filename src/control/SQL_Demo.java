@@ -33,7 +33,7 @@ public class SQL_Demo {
                         "kundenWunsch varchar (255) NOT NULL,"+
                         "anzahl int NOT NULL,"+
                         "kundenGeld int NOT NULL,"+
-                        "PRIMARY KEY(wunschID)"+
+                        "PRIMARY KEY(wunschID,kappa)"+
                         ");");
                 } catch (Exception e){
                     System.out.println("Keine neue Tabelle angelegt.");

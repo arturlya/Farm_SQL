@@ -1,6 +1,7 @@
 package control;
 
 import control.framework.UIController;
+import model.Tier;
 
 /**
  * Ein Objekt der Klasse ProgramController dient dazu das Programm zu steuern. Die updateProgram - Methode wird
@@ -30,6 +31,8 @@ public class ProgramController {
     public void startProgram(){
         //new SQL_Demo();
         new SQL_Loader();
+        new Farm();
+        new Tier("Rind","leer",1.1,0,1);
     }
 
     /**
