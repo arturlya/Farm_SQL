@@ -23,11 +23,12 @@ public class Tier extends GraphicalObject {
             stmt.execute("INSERT INTO "+StaticData.tier+"(fleischArt, besonderheiten, wachstumsRate,wachstum,farmID) VALUES ('"+fleischArt+"','"+besonderheiten+"',"+wachstumsRate+","+wachstum+","+farmID+");");
             System.out.println("Got new animal");
             ResultSet result = stmt.executeQuery("SELECT * FROM "+StaticData.tier+";");
+            int i=0;
             while(result.next()){
-                int i=1;
-                System.out.println(result.getString(i));
                 i++;
             }
+            id = i;
+            System.out.println(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -43,7 +44,9 @@ public class Tier extends GraphicalObject {
     @Override
     public void update(double dt){
         try {
-            stmt.execute("UPDATE "+ StaticData.tier+" SET wachstum = wachstum + wachstumsRate*" +dt+" WHERE tierID=="+id+";");
+            stmt.execute("UPDATE "+ StaticData.tier+" SET wachstum = wachstum + wachstumsRate*" +dt+" WHERE tierID=="+1+";");
+            ResultSet resultSet = stmt.executeQuery("SELECT wachstum FROM "+StaticData.tier+" WHERE tierID=="+1+";");
+            System.out.println(resultSet.getString(1));
         } catch (SQLException e) {
             e.printStackTrace();
         }
