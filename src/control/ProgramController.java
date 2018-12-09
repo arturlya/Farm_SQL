@@ -1,6 +1,8 @@
 package control;
 
 import control.framework.UIController;
+import model.GameTime;
+import model.Pflanze;
 import model.Tier;
 
 /**
@@ -31,8 +33,11 @@ public class ProgramController {
     public void startProgram(){
         //new SQL_Demo();
         new SQL_Loader();
+        uiController.drawObject(new GameTime());
         new Farm();
         new Tier("Rind","leer",1.1,0,1);
+        uiController.drawObject(new Pflanze("Weizen",1));
+        uiController.drawObject(new Pflanze("Weizen",1));
     }
 
     /**

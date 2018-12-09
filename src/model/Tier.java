@@ -26,6 +26,10 @@ public class Tier extends GraphicalObject {
             int i=0;
             while(result.next()){
                 i++;
+                fleischArt = result.getString("fleischArt");
+                besonderheiten = result.getString("besonderheiten");
+                wachstumsRate = result.getDouble("wachstumsRate");
+                wachstum = result.getDouble("wachstum");
             }
             id = i;
             System.out.println(id);
@@ -44,12 +48,22 @@ public class Tier extends GraphicalObject {
     @Override
     public void update(double dt){
         try {
-            stmt.execute("UPDATE "+ StaticData.tier+" SET wachstum = wachstum + wachstumsRate*" +dt+" WHERE tierID=="+1+";");
-            ResultSet resultSet = stmt.executeQuery("SELECT wachstum FROM "+StaticData.tier+" WHERE tierID=="+1+";");
-            System.out.println(resultSet.getString(1));
+            stmt.execute("UPDATE "+ StaticData.tier+" SET wachstum = wachstum + wachstumsRate*" +dt+" WHERE tierID="+id+";");
+            ResultSet resultSet = stmt.executeQuery("SELECT wachstum FROM "+StaticData.tier+" WHERE tierID="+1+";");
+            //  System.out.println(resultSet.getString(1));
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void kill(){
+        if(besonderheiten.equals("Eier")){
+
+        }
+        if(besonderheiten.equals("Milch")){
+
+        }
+
     }
 
 
