@@ -29,6 +29,12 @@ public class Pflanze extends GraphicalObject {
     @Override
     public void update(double dt){
         if (wachstum < 15) wachstum += wachstumsRate * dt;
+        if (wachstum % 2 > 0 && wachstum % 2 < 0.1) updateDatenbank();
+        if (wachstum >= 15 & !readyToHarvest){
+            updateDatenbank();
+            readyToHarvest = true;
+        }
+
     }
 
     private void datenErstellung(String pflanzenArt, int farmID){
@@ -60,4 +66,11 @@ public class Pflanze extends GraphicalObject {
         }
     }
 
+    private void updateDatenbank(){
+        try {
+            stmt.execute("UPDATE "+ StaticData.pflanze+" SET wachstum = "+Math.round(wachstum)+" WHERE pflanzenID="+id+";");
+        } catch (SQLException e) {
+            System.out.println("Die Daten wurden nicht updatet");
+        }
+    }
 }
