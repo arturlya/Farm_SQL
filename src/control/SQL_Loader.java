@@ -21,9 +21,10 @@ public class SQL_Loader {
             try { stmt.execute("DROP TABLE " + StaticData.lager + ";"); } catch (Exception e) { System.out.println("Tabelle Lager nicht gelöscht."); }
             try { stmt.execute("DROP TABLE " + StaticData.mitarbieter + ";"); } catch (Exception e) { System.out.println("Tabelle Mitarbeiter nicht gelöscht."); }
             try { stmt.execute("DROP TABLE " + StaticData.tier + ";"); } catch (Exception e) { System.out.println("Tabelle Tier nicht gelöscht."); }
-            //try { stmt.execute("DROP TABLE "+StaticData.mutationskammer+";"); } catch (Exception e) { System.out.println("Tabelle nicht gelöscht."); }
-            //try { stmt.execute("DROP TABLE "+StaticData.wird_gekreuzt+";"); } catch (Exception e) { System.out.println("Tabelle nicht gelöscht."); }
+            //try { stmt.execute("DROP TABLE "+StaticData.mutationskammer+";"); } catch (Exception e) { System.out.println("Tabelle Mutationskammer nicht gelöscht."); }
+            //try { stmt.execute("DROP TABLE "+StaticData.wird_gekreuzt+";"); } catch (Exception e) { System.out.println("Tabelle wird_gekreuzt nicht gelöscht."); }
             try { stmt.execute("DROP TABLE " + StaticData.farm + ";"); } catch (Exception e) { System.out.println("Tabelle Farm nicht gelöscht."); }
+            try { stmt.execute("DROP TABLE " + StaticData.kuemmert_sich + ";"); } catch (Exception e) { System.out.println("Tablle kuemmert_sich nicht gelöscht."); }
             try { stmt.execute("CREATE TABLE "+StaticData.farm+" (" +
                         "farmID int NOT NULL AUTO_INCREMENT,"+
                         "farmGeld double NOT NULL,"+
@@ -84,10 +85,10 @@ public class SQL_Loader {
             try{ stmt.execute("CREATE TABLE "+StaticData.mitarbieter+" (" +
                     "mitarbeiterID int NOT NULL AUTO_INCREMENT,"+
                     "job varchar(255) NOT NULL,"+
-                    "arbeitsplatz varchar(255) NOT NULL,"+
+                    "arbeitsplatz int NOT NULL,"+
                     "lohn double NOT NULL,"+
                     "PRIMARY KEY(mitarbeiterID),"+
-                    "FOREIGN KEY(arbeitsplatz) "+StaticData.farm+"(farmID)"+
+                    "FOREIGN KEY(arbeitsplatz) REFERENCES "+StaticData.farm+"(farmID)"+
                     ");");
             }catch (Exception e){
                 System.out.println("Keine neue Tabelle Mitarbeiter angelegt.");
@@ -106,7 +107,17 @@ public class SQL_Loader {
                         "mutationskammer int NOT NULL,"+
                         "PRIMARY KEY(kreuzungsID)"+
                         ");");*/
-
+            try { stmt.execute("CREATE TABLE "+StaticData.kuemmert_sich+" (" +
+                    "mitarbeiterID int NOT NULL," +
+                    "pflanzenID int NOT NULL," +
+                    "fuerSpaeter int NOT NULL," +
+                    "PRIMARY KEY (mitarbeiterID,pflanzenID)," +
+                    "FOREIGN KEY (mitarbeiterID) REFERENCES "+StaticData.mitarbieter+"(mitarbeiterID)," +
+                    "FOREIGN KEY (pflanzenID) REFERENCES "+StaticData.pflanze+"(pflanzenID)" +
+                    ");");
+            }catch (Exception e) {
+                System.out.println("Keine neue Tabelle kuemmert_sich erstellt");
+            }
         }catch(Exception err){err.printStackTrace();}
     }
 }

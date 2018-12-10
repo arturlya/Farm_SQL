@@ -70,7 +70,7 @@ public class Pflanze extends GraphicalObject {
         try {
             stmt.execute("UPDATE "+ StaticData.pflanze+" SET wachstum = "+Math.round(wachstum)+" WHERE pflanzenID="+id+";");
         } catch (SQLException e) {
-            System.out.println("Die Daten wurden nicht updatet");
+            System.out.println("Die Daten von Pflanze wurden nicht updatet");
         }
     }
 }

@@ -11,5 +11,6 @@ public class StaticData {
     public static final String shop = "MarArtFarm_Shop";
     public static final String mutationskammer = "MarArtFarm_Mutationskammer";
     public static final String wird_gekreuzt = "MarArtFarm_wird_gekreuzt";
+    public static final String kuemmert_sich = "MarArtFarm_kümmert_sich";
 
 }
