@@ -56,15 +56,9 @@ public class Tier extends GraphicalObject {
         }
     }
 
-    public void kill(){
-        if(besonderheiten.equals("Eier")){
+    public String getBesonderheiten(){return besonderheiten;}
 
-        }
-        if(besonderheiten.equals("Milch")){
-
-        }
-
-    }
+    public String getFleischArt(){return fleischArt;}
 
 
 }

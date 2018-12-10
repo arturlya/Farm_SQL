@@ -1,5 +1,6 @@
 package control;
 
+import model.Tier;
 import model.abitur.datenbanken.mysql.DatabaseConnector;
 
 import java.sql.Connection;
@@ -16,5 +17,14 @@ public class Farm {
             stmt = con.createStatement();
             stmt.execute("INSERT INTO "+StaticData.farm+"(farmGeld,farmName,farmFelder) VALUES(500,'TESTFARM',100);");
         }catch(Exception err){err.printStackTrace();}
+    }
+
+    public void kill(Tier tier){
+        if(tier.getBesonderheiten().equals("Eier")){
+
+        }
+        if(tier.getBesonderheiten().equals("Milch")){
+
+        }
     }
 }

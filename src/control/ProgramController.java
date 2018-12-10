@@ -1,9 +1,7 @@
 package control;
 
 import control.framework.UIController;
-import model.GameTime;
-import model.Pflanze;
-import model.Tier;
+import model.*;
 
 /**
  * Ein Objekt der Klasse ProgramController dient dazu das Programm zu steuern. Die updateProgram - Methode wird
@@ -38,6 +36,9 @@ public class ProgramController {
         new Tier("Rind","leer",1.1,0,1);
         uiController.drawObject(new Pflanze("Weizen",1));
         uiController.drawObject(new Pflanze("Weizen",1));
+        Lager lager = new Lager(1);
+        lager.storageResource(new Resource("Semelsalad", 1));
+        lager.storageResource(new Resource("Pferdefleisch",9999));
     }
 
     /**
