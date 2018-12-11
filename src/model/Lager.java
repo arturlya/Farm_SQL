@@ -20,56 +20,58 @@ public class Lager {
     public void storageResource(Resource r){
         boolean added = false;
         lager.toFirst();
-        while(lager.hasAccess()){
+
+        while(lager.hasAccess() && !added){
             if(lager.getContent().getName().equals(r.getName())){
-                //while(lagerplatz-belegterPlatz < r.getAmmount()){
-                 //   r.removeAmmount(1);
-               // }
-                lager.getContent().addAmmount(r.getAmmount());
-                try {
-                    Connection con = DriverManager.getConnection("jdbc:mysql://mysql.webhosting24.1blu.de/db85565x2810214?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "s85565_2810214", "kkgbeste");
-                    Statement stmt = con.createStatement();
-
-                    stmt.execute("UPDATE "+StaticData.lager+" SET belegterPlatz = belegterPlatz+"+r.getAmmount()+" WHERE lagerID = 1;");
-                } catch (SQLException e) {
-                    e.printStackTrace();
+                while(lagerplatz-belegterPlatz <= r.getAmmount()){
+                    r.removeAmmount(1);
+                    System.out.println("Das Lager hat keinen Platz für die Ressource!");
                 }
-                added = true;
 
+                lager.getContent().addAmmount(r.getAmmount());
+                belegterPlatz = belegterPlatz+r.getAmmount();
+                added = true;
             }
+            lager.next();
         }
         if(!added){
-           // while(lagerplatz-belegterPlatz < r.getAmmount()){
-            //    r.removeAmmount(1);
-           // }
-            lager.append(r);
-            try {
-                Connection con = DriverManager.getConnection("jdbc:mysql://mysql.webhosting24.1blu.de/db85565x2810214?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "s85565_2810214", "kkgbeste");
-                Statement stmt = con.createStatement();
-
-                stmt.execute("UPDATE "+StaticData.lager+" SET belegterPlatz = belegterPlatz+"+r.getAmmount()+" WHERE lagerID = 1;");
-            } catch (SQLException e) {
-                e.printStackTrace();
+            while(lagerplatz-belegterPlatz < r.getAmmount()){
+                r.removeAmmount(1);
+                System.out.println("Das Lager hat keinen Platz für die Ressource!");
             }
+            belegterPlatz = belegterPlatz+r.getAmmount();
+            lager.append(r);
+
+        }
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://mysql.webhosting24.1blu.de/db85565x2810214?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "s85565_2810214", "kkgbeste");
+            Statement stmt = con.createStatement();
+
+            stmt.execute("UPDATE "+StaticData.lager+" SET belegterPlatz = belegterPlatz+"+r.getAmmount()+" WHERE lagerID = 1;");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
     }
 
-    public void removeResource(Resource r,int ammount){
+    public void removeResource(String name,int ammount){
         lager.toFirst();
-        while(lager.hasAccess()){
-            if(lager.getContent().getName().equals(r.getName())){
+        boolean removed = false;
+        while(lager.hasAccess() && !removed){
+            if(lager.getContent().getName().equals(name)){
                 lager.getContent().removeAmmount(ammount);
                 Connection con = null;
                 try {
                     con = DriverManager.getConnection("jdbc:mysql://mysql.webhosting24.1blu.de/db85565x2810214?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "s85565_2810214", "kkgbeste");
                     Statement stmt = con.createStatement();
+                    belegterPlatz = belegterPlatz-ammount;
                     stmt.execute("UPDATE "+StaticData.lager+" SET belegterPlatz = belegterPlatz-"+ammount+" WHERE lagerID = 1;");
+                    removed = true;
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-
             }
+            lager.next();
         }
     }
 
@@ -83,7 +85,7 @@ public class Lager {
 
             ResultSet resultSet = stmt.executeQuery("SELECT lagerPlatz FROM "+StaticData.lager+" WHERE lagerID = 1;");
             if(resultSet.next())
-            lagerplatz = resultSet.getInt("lagerPlatz");
+                lagerplatz = resultSet.getInt("lagerPlatz");
 
             resultSet = stmt.executeQuery("SELECT belegterPlatz FROM "+StaticData.lager+";");
             if(resultSet.next()) {

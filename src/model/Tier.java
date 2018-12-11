@@ -12,7 +12,7 @@ public class Tier extends GraphicalObject {
 
     private Statement stmt;
     private int id = 1;
-    private String fleischArt,besonderheiten;
+    private String fleischArt = "",besonderheiten="";
     private double wachstum;
 
     public Tier(String fleischArt, String besonderheiten,double wachstumsRate, double wachstum, int farmID){
@@ -26,10 +26,10 @@ public class Tier extends GraphicalObject {
             int i=0;
             while(result.next()){
                 i++;
-                fleischArt = result.getString("fleischArt");
-                besonderheiten = result.getString("besonderheiten");
-                wachstumsRate = result.getDouble("wachstumsRate");
-                wachstum = result.getDouble("wachstum");
+                this.fleischArt = result.getString("fleischArt");
+                this.besonderheiten = result.getString("besonderheiten");
+                //this.wachstumsRate = result.getDouble("wachstumsRate");
+                this.wachstum = result.getDouble("wachstum");
             }
             id = i;
             System.out.println(id);
@@ -60,5 +60,8 @@ public class Tier extends GraphicalObject {
 
     public String getFleischArt(){return fleischArt;}
 
+    public double getWachstum(){return wachstum;}
 
+
+    public int getId(){return id;}
 }
