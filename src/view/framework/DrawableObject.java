@@ -18,4 +18,8 @@ public interface DrawableObject{
 
     void mouseReleased(MouseEvent e);
 
+    void mouseMoved(MouseEvent e);
+
+    void mouseClicked(MouseEvent e);
+
 }

@@ -99,6 +99,16 @@ public abstract class GraphicalObject implements DrawableObject {
 
     }
 
+    @Override
+    public void mouseMoved(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e){
+
+    }
+
     /**
      * Überprüft, ob das übergebene Objekt mit diesem GraphicalObject kollidiert (Rechteckkollision). Dabei werden die Koordinaten und
      * die Breite und Höhe des Objekts berücksichtigt.

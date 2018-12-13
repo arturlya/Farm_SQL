@@ -13,9 +13,26 @@ public class Tier extends GraphicalObject {
     private Statement stmt;
     private int id = 1;
     private String fleischArt = "",besonderheiten="";
-    private double wachstum;
+    private double wachstum,wachstumsRate;
 
-    public Tier(String fleischArt, String besonderheiten,double wachstumsRate, double wachstum, int farmID){
+    public Tier(String unterart, int farmID){
+
+        switch(unterart){
+            case "Kuh":
+                fleischArt = "Rind";
+                besonderheiten = "Milch";
+                break;
+            case "Huhn":
+                fleischArt = "Geflügel";
+                besonderheiten = "Eier";
+                break;
+            case "Schwein":
+                fleischArt = "Schwein";
+                besonderheiten = "leer";
+                break;
+        }
+        wachstum = 0;
+        wachstumsRate = 1/(Math.random()*3+13.5);
 
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://mysql.webhosting24.1blu.de/db85565x2810214?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "s85565_2810214", "kkgbeste");
@@ -26,13 +43,9 @@ public class Tier extends GraphicalObject {
             int i=0;
             while(result.next()){
                 i++;
-                this.fleischArt = result.getString("fleischArt");
-                this.besonderheiten = result.getString("besonderheiten");
-                //this.wachstumsRate = result.getDouble("wachstumsRate");
-                this.wachstum = result.getDouble("wachstum");
             }
             id = i;
-            System.out.println(id);
+            // System.out.println(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
