@@ -52,7 +52,7 @@ public class Shop extends GraphicalObject{
 
     @Override
     public void draw(DrawTool drawTool) {
-        drawTool.setCurrentColor(0,0,200,100);
+        drawTool.setCurrentColor(0,0,0,100);
         drawTool.drawFilledRectangle(shopFrame);
         drawTool.setCurrentColor(0,0,0,255);
         if(shopOpened){

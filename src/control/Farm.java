@@ -6,13 +6,19 @@ import model.Tier;
 import model.framework.GraphicalObject;
 import view.framework.DrawTool;
 
+import javax.imageio.ImageIO;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
 import java.sql.*;
 
 public class Farm extends GraphicalObject {
 
     private Statement stmt;
+    BufferedImage grassImage;
 
 
     private boolean farmWindowOpened;
@@ -42,14 +48,20 @@ public class Farm extends GraphicalObject {
         x = -150;
         y = 0;
         farmWindowFrame = new Rectangle2D.Double(x,y,200,Config.WINDOW_HEIGHT);
+        try {
+            grassImage = ImageIO.read(new File("assets/grassTile.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void draw(DrawTool drawTool) {
+        drawTool.drawImage(grassImage,0,0);
         drawTool.setCurrentColor(0,0,0,100);
         drawTool.drawFilledRectangle(farmWindowFrame);
         drawTool.setCurrentColor(0,0,0,255);
-        drawTool.drawText(x+80,y+20,"FARM");
+        drawTool.drawText(x+80,y+40,"FARM");
         drawTool.drawText(x+20,y+120,"Geld : "+farmGeld);
     }
 

@@ -32,14 +32,13 @@ public class ProgramController {
         //new SQL_Demo();
         new SQL_Loader();
 
-        uiController.drawObject(new GameTime());
+
         Farm farm = new Farm();
         uiController.drawObject(farm);
         Shop shop = new Shop(uiController,farm.getId());
         uiController.drawObject(shop);
-        Tier tier = new Tier("Kuh",farm.getId());
-        uiController.drawObject(new Pflanze("Weizen",farm.getId()));
-        uiController.drawObject(new Pflanze("Weizen",farm.getId()));
+        //Tier tier = new Tier("Kuh",farm.getId());
+
         Lager lager = new Lager(1);
         lager.storageResource(new Resource("Semelsalad", 35));
         lager.storageResource(new Resource("Weizen",18));
@@ -47,6 +46,7 @@ public class ProgramController {
         lager.removeResource("Weizen",11);
         //farm.kill(tier,lager);
 
+        uiController.drawObject(new GameTime());
     }
 
     /**
