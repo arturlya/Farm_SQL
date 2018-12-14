@@ -26,6 +26,10 @@ public class DrawTool {
         if (graphics2D!= null) graphics2D.drawImage(bI, (int)x, (int)y, null);
     }
 
+    public void drawImage(BufferedImage bI, double x, double y,int width,int height){
+        if (graphics2D!= null) graphics2D.drawImage(bI.getScaledInstance(width,height,0),(int) x,(int) y,null);
+    }
+
     /**
      * Zeichnet ein Rechteck als Linie ohne Fuellung
      * @param x Die x-Koordinate der oberen linken Ecke
@@ -35,6 +39,9 @@ public class DrawTool {
      */
     public void drawRectangle(double x, double y, double width, double height){
         Rectangle2D.Double r = new Rectangle2D.Double(x,y,width,height);
+        if (graphics2D!= null) graphics2D.draw(r);
+    }
+    public void drawRectangle(Rectangle2D.Double r){
         if (graphics2D!= null) graphics2D.draw(r);
     }
 
@@ -47,6 +54,9 @@ public class DrawTool {
      */
     public void drawFilledRectangle(double x, double y, double width, double height){
         Rectangle2D.Double r = new Rectangle2D.Double(x,y,width,height);
+        if (graphics2D!= null) graphics2D.fill(r);
+    }
+    public void drawFilledRectangle(Rectangle2D.Double r){
         if (graphics2D!= null) graphics2D.fill(r);
     }
 
@@ -139,7 +149,7 @@ public class DrawTool {
     public void drawText(double x, double y, String text){
         if (graphics2D!=null) graphics2D.drawString(text,(int)x,(int)y);
     }
-	
+
     /**
      * Spezifiziert das zu verwendende Grafikobjekt von Java
      * Bitte nicht verwenden.

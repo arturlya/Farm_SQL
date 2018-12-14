@@ -12,10 +12,27 @@ public class Tier extends GraphicalObject {
 
     private Statement stmt;
     private int id = 1;
-    private String fleischArt,besonderheiten;
-    private double wachstum;
+    private String fleischArt = "",besonderheiten="";
+    private double wachstum,wachstumsRate;
 
-    public Tier(String fleischArt, String besonderheiten,double wachstumsRate, double wachstum, int farmID){
+    public Tier(String unterart, int farmID){
+
+        switch(unterart){
+            case "Kuh":
+                fleischArt = "Rind";
+                besonderheiten = "Milch";
+                break;
+            case "Huhn":
+                fleischArt = "Geflügel";
+                besonderheiten = "Eier";
+                break;
+            case "Schwein":
+                fleischArt = "Schwein";
+                besonderheiten = "leer";
+                break;
+        }
+        wachstum = 0;
+        wachstumsRate = 1/(Math.random()*3+13.5);
 
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://mysql.webhosting24.1blu.de/db85565x2810214?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "s85565_2810214", "kkgbeste");
@@ -26,13 +43,9 @@ public class Tier extends GraphicalObject {
             int i=0;
             while(result.next()){
                 i++;
-                fleischArt = result.getString("fleischArt");
-                besonderheiten = result.getString("besonderheiten");
-                wachstumsRate = result.getDouble("wachstumsRate");
-                wachstum = result.getDouble("wachstum");
             }
             id = i;
-            System.out.println(id);
+            // System.out.println(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -56,15 +69,12 @@ public class Tier extends GraphicalObject {
         }
     }
 
-    public void kill(){
-        if(besonderheiten.equals("Eier")){
+    public String getBesonderheiten(){return besonderheiten;}
 
-        }
-        if(besonderheiten.equals("Milch")){
+    public String getFleischArt(){return fleischArt;}
 
-        }
-
-    }
+    public double getWachstum(){return wachstum;}
 
 
+    public int getId(){return id;}
 }
