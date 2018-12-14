@@ -38,6 +38,7 @@ public class ProgramController {
         Shop shop = new Shop(uiController,farm.getId());
         uiController.drawObject(shop);
         //Tier tier = new Tier("Kuh",farm.getId());
+        Pflanze pflanze = new Pflanze("Tomate",1);
 
         Lager lager = new Lager(1);
         lager.storageResource(new Resource("Semelsalad", 35));

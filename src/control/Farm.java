@@ -1,8 +1,6 @@
 package control;
 
-import model.Lager;
-import model.Resource;
-import model.Tier;
+import model.*;
 import model.framework.GraphicalObject;
 import view.framework.DrawTool;
 
@@ -122,6 +120,17 @@ public class Farm extends GraphicalObject {
                 stmt = con.createStatement();
                 stmt.execute("DELETE FROM "+StaticData.tier+" WHERE tierID = "+tier.getId()+";");
             }catch(SQLException e){e.printStackTrace();}
+        }
+    }
+
+    public void loot(Lootable lootable, Lager lager){
+        if(lootable instanceof Tier){
+            if(!((Tier) lootable).getBesonderheiten().equals("leer")){
+                if(((Tier) lootable).isGrown() && ((Tier) lootable).getCooldown() <= 0){
+                    ((Tier) lootable).setCooldown(GameTime.tag+7);
+                    lager.storageResource(new Resource(((Tier) lootable).getBesonderheiten(),1));
+                }
+            }
         }
     }
 

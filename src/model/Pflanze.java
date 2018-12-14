@@ -8,7 +8,7 @@ import view.framework.DrawTool;
 
 import java.sql.*;
 
-public class Pflanze extends GraphicalObject {
+public class Pflanze extends GraphicalObject implements Lootable{
 
     private Statement stmt;
     private int id,feldbelegung;
@@ -43,11 +43,16 @@ public class Pflanze extends GraphicalObject {
             stmt = con.createStatement();
         }catch (Exception e) {System.out.println("Keine Connection");}
 
-        wachstumsRate = 1/(Math.random()*3+13.5);
-
         if (pflanzenArt.equalsIgnoreCase("Weizen")) feldbelegung = 1;
-        else if (pflanzenArt.equalsIgnoreCase("")) feldbelegung = 1;
+        else if (pflanzenArt.equalsIgnoreCase("Mais")) feldbelegung = 1;
+        else if (pflanzenArt.equalsIgnoreCase("Apfel")) feldbelegung = 8;
+        else if (pflanzenArt.equalsIgnoreCase("Tomate")) feldbelegung = 2;
+        else if (pflanzenArt.equalsIgnoreCase("Reis")) feldbelegung = 1;
         else feldbelegung = 0;
+
+        if (feldbelegung != 0) {
+            wachstumsRate = 1/(Math.random()*3+13.5);
+        }
 
         try {
             stmt.execute("INSERT INTO "+StaticData.pflanze+" (pflanzenArt,wachstumsRate,wachstum,feldBelegung,farmID) VALUES ('" + pflanzenArt + "','" + wachstumsRate + "'," + 0 + "," + feldbelegung + "," + farmID + ");");
@@ -72,5 +77,9 @@ public class Pflanze extends GraphicalObject {
         } catch (SQLException e) {
             System.out.println("Die Daten von Pflanze wurden nicht updatet");
         }
+    }
+
+    public boolean isReadyToHarvest() {
+        return readyToHarvest;
     }
 }

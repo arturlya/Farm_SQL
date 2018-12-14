@@ -6,7 +6,7 @@ import view.framework.DrawTool;
 public class GameTime extends GraphicalObject {
 
     private double gameTime;
-    private int tag;
+    public static int tag;
 
     public GameTime(){
 
@@ -22,9 +22,5 @@ public class GameTime extends GraphicalObject {
     public void update(double dt) {
         gameTime += dt;
         tag = (int)(gameTime/15)+1;
-    }
-
-    public int getTag() {
-        return tag;
     }
 }

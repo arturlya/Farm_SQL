@@ -8,12 +8,13 @@ import view.framework.DrawTool;
 
 import java.sql.*;
 
-public class Tier extends GraphicalObject {
+public class Tier extends GraphicalObject implements Lootable{
 
     private Statement stmt;
-    private int id = 1;
+    private int id = 1,fullyGrown,cooldown;
     private String fleischArt = "",besonderheiten="";
     private double wachstum,wachstumsRate;
+    private boolean grown;
 
     public Tier(String unterart, int farmID){
 
@@ -21,14 +22,17 @@ public class Tier extends GraphicalObject {
             case "Kuh":
                 fleischArt = "Rind";
                 besonderheiten = "Milch";
+                fullyGrown = 30;
                 break;
             case "Huhn":
                 fleischArt = "Geflügel";
                 besonderheiten = "Eier";
+                fullyGrown = 20;
                 break;
             case "Schwein":
                 fleischArt = "Schwein";
                 besonderheiten = "leer";
+                fullyGrown = 25;
                 break;
         }
         wachstum = 0;
@@ -60,12 +64,22 @@ public class Tier extends GraphicalObject {
 
     @Override
     public void update(double dt){
+        if (wachstum < fullyGrown) wachstum += wachstumsRate * dt;
+        if (wachstum % 2 > 0 && wachstum % 2 < 0.1) updateDatenbank();
+        if (wachstum >= fullyGrown & !grown){
+            updateDatenbank();
+            grown = true;
+        }
+        if (cooldown == GameTime.tag) {
+            cooldown = 0;
+        }
+    }
+
+    private void updateDatenbank(){
         try {
-            stmt.execute("UPDATE "+ StaticData.tier+" SET wachstum = wachstum + wachstumsRate*" +dt+" WHERE tierID="+id+";");
-            ResultSet resultSet = stmt.executeQuery("SELECT wachstum FROM "+StaticData.tier+" WHERE tierID="+1+";");
-            //  System.out.println(resultSet.getString(1));
+            stmt.execute("UPDATE "+ StaticData.tier+" SET wachstum = "+Math.round(wachstum)+" WHERE tierID="+id+";");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("Die Daten von Tier wurden nicht updatet");
         }
     }
 
@@ -77,4 +91,16 @@ public class Tier extends GraphicalObject {
 
 
     public int getId(){return id;}
+
+    public boolean isGrown() {
+        return grown;
+    }
+
+    public int getCooldown() {
+        return cooldown;
+    }
+
+    public void setCooldown(int cooldown) {
+        this.cooldown = cooldown;
+    }
 }
