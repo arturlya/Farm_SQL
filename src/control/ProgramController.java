@@ -10,6 +10,7 @@ import model.*;
 public class ProgramController {
 
     // Attribute
+    public static int currentPanel = 0;
 
     // Referenzen
     private UIController uiController;  // diese Referenz soll auf ein Objekt der Klasse uiController zeigen. Über dieses Objekt wird das Fenster gesteuert.
@@ -29,16 +30,25 @@ public class ProgramController {
      * Diese Methode wird genau ein mal nach Programmstart aufgerufen.
      */
     public void startProgram(){
+        uiController.createNewDrawingPanel();
+
         //new SQL_Demo();
         new SQL_Loader();
 
-
         Farm farm = new Farm();
-        uiController.drawObject(farm);
+        uiController.drawObjectOnPanel(farm,0);
+        uiController.drawObjectOnPanel(farm,1);
         Shop shop = new Shop(uiController,farm.getId());
-        uiController.drawObject(shop);
+        uiController.drawObjectOnPanel(shop,0);
+        uiController.drawObjectOnPanel(shop,1);
+        uiController.drawObjectOnPanel(new Player(uiController),0);
+        uiController.drawObjectOnPanel(new Player(uiController),1);
         //Tier tier = new Tier("Kuh",farm.getId());
-        Pflanze pflanze = new Pflanze("Tomate",1);
+        //Pflanze pflanze = new Pflanze("Weizen",1);
+        //uiController.drawObject(pflanze);
+        for (int i = 0; i < 20; i++) {
+            uiController.drawObjectOnPanel(new Pflanze("Weizen",1),0);
+        }
 
         Lager lager = new Lager(1);
         lager.storageResource(new Resource("Semelsalad", 35));

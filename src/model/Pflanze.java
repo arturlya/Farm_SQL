@@ -17,13 +17,16 @@ public class Pflanze extends GraphicalObject implements Lootable{
 
     public Pflanze(String pflanzenArt, int farmID){
         datenErstellung(pflanzenArt,farmID);
+        createAndSetNewImage("assets/"+pflanzenArt+".png");
     }
-
-
 
     @Override
     public void draw(DrawTool drawTool){
-        drawTool.drawText(200,200+(id*15),""+wachstum);
+        drawTool.setCurrentColor(100,50,5,220);
+        drawTool.drawFilledRectangle(((id-1)%8)*50+200,((id-1)/8)*50+20,50,50);
+        drawTool.setCurrentColor(255,255,255,255);
+        drawTool.drawText(((id-1)%8)*50+200,((id-1)/8)*50+33,""+Math.round(wachstum));
+        drawTool.drawImage(getMyImage(),((id-1)%8)*50+200,((id-1)/8)*50+20,50,50);
     }
 
     @Override

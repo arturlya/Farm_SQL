@@ -53,13 +53,19 @@ public class Tier extends GraphicalObject implements Lootable{
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        createAndSetNewImage("assets/"+unterart+".png");
     }
 
 
 
     @Override
     public void draw(DrawTool drawTool){
-
+        drawTool.setCurrentColor(100,50,5,255);
+        drawTool.drawFilledRectangle(((id-1)%4)*100+200,((id-1)/4)*100+20,100,100);
+        drawTool.setCurrentColor(255,255,255,255);
+        drawTool.drawText(((id-1)%4)*100+200,((id-1)/4)*100+33,""+Math.round(wachstum));
+        drawTool.drawImage(getMyImage(),((id-1)%4)*100+200,((id-1)/4)*100+20,100,100);
     }
 
     @Override

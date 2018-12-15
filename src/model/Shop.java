@@ -14,7 +14,7 @@ import java.sql.*;
 public class Shop extends GraphicalObject{
 
     private Statement stmt;
-    private Rectangle2D.Double shopFrame;
+    private Rectangle2D.Double shopFrame,rec;
     private boolean shopOpened;
     private UIController uiController;
     private List<ShopElement> buttons;
@@ -68,32 +68,18 @@ public class Shop extends GraphicalObject{
     public void update(double dt) {
         shopFrame.setFrame(x,y,width,height);
         if(shopOpened ){
-            if(x+width>Config.WINDOW_WIDTH) {
-                x = x - 70 * dt;
-                for (buttons.toFirst(); buttons.hasAccess(); buttons.next()) {
-                    buttons.getContent().setX(buttons.getContent().getX()-70*dt);
-                }
-            }else {
-                x = Config.WINDOW_WIDTH-width;
-                buttons.toFirst();
-                for(int i=0;buttons.hasAccess();buttons.next()) {
-                    buttons.getContent().setX(x + 15 +i*100);
-                    i++;
-                }
+            x = Config.WINDOW_WIDTH-width;
+            buttons.toFirst();
+            for(int i=0;buttons.hasAccess();buttons.next()) {
+                buttons.getContent().setX(x + 15 +i*100);
+                i++;
             }
         }else{
-            if(x<Config.WINDOW_WIDTH-50) {
-                x = x + 70 * dt;
-                for (buttons.toFirst(); buttons.hasAccess(); buttons.next()) {
-                    buttons.getContent().setX(buttons.getContent().getX()+70*dt);
-                }
-            }else{
-                x = Config.WINDOW_WIDTH-50;
-                buttons.toFirst();
-                for(int i=0;buttons.hasAccess();buttons.next()) {
-                    buttons.getContent().setX(x + 15 +i*100);
-                    i++;
-                }
+            x = Config.WINDOW_WIDTH-50;
+            buttons.toFirst();
+            for(int i=0;buttons.hasAccess();buttons.next()) {
+                buttons.getContent().setX(x + 15 +i*100);
+                i++;
             }
         }
         if(cooldown > 0){
@@ -123,7 +109,7 @@ public class Shop extends GraphicalObject{
 
     public void mouseClicked(MouseEvent e){
         for (buttons.toFirst(); buttons.hasAccess(); buttons.next()) {
-            Rectangle2D.Double rec = new Rectangle2D.Double(buttons.getContent().getX(),buttons.getContent().getY(),75,75);
+            rec = new Rectangle2D.Double(buttons.getContent().getX(),buttons.getContent().getY(),75,75);
             if(rec.intersects(e.getX(),e.getY(),1,1) &&  cooldown<=0){
                 try {
                     ResultSet resultSet = stmt.executeQuery("SELECT farmGeld FROM "+StaticData.farm+" WHERE farmID = "+farmID);
@@ -136,11 +122,11 @@ public class Shop extends GraphicalObject{
                         switch(buttons.getContent().getElement()){
                             case "Tier":
                                 Tier tier = new Tier(buttons.getContent().getUnterart(),farmID);
-                                uiController.drawObject(tier);
+                                uiController.drawObjectOnPanel(tier,1);
                                 break;
                             case "Pflanze":
                                 Pflanze pflanze = new Pflanze(buttons.getContent().getUnterart(),farmID);
-                                uiController.drawObject(pflanze);
+                                uiController.drawObjectOnPanel(pflanze,0);
                                 break;
                             case "Mitarbeiter":
 

@@ -1,5 +1,10 @@
 package control;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 public class StaticData {
 
     public static final String farm = "MarArtFarm_Farm";
@@ -13,4 +18,15 @@ public class StaticData {
     public static final String wird_gekreuzt = "MarArtFarm_wird_gekreuzt";
     public static final String kuemmert_sich = "MarArtFarm_kümmert_sich";
 
+    public static BufferedImage huhn;
+    public static BufferedImage weizen;
+
+    static {
+        try {
+            huhn = ImageIO.read(new File("assets/Huhn.png"));
+            weizen = ImageIO.read(new File("assets/Weizen.png"));
+        } catch (IOException e) {
+            if ( Config.INFO_MESSAGES) System.out.println("Laden eines Bildes fehlgeschlagen.");
+        }
+    }
 }

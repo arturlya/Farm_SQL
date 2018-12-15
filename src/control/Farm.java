@@ -67,18 +67,9 @@ public class Farm extends GraphicalObject {
     public void update(double dt) {
         farmWindowFrame.setFrame(x,y,200,Config.WINDOW_HEIGHT);
         if(farmWindowOpened){
-            if(x<0) {
-                x = x + 70 * dt;
-
-            }else{
-                x = 0;
-            }
+            x = 0;
         }else{
-            if(x>-150) {
-                x = x - 70 * dt;
-            }else{
-                x = -150;
-            }
+            x = -150;
         }
 
         try {

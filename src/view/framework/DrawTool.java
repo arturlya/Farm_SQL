@@ -16,6 +16,14 @@ public class DrawTool {
     // Referenzen
     private Graphics2D graphics2D; //java-spezifisches Objekt zum Arbeiten mit 2D-Grafik
 
+    public void draw(Shape s){
+        if (graphics2D!= null) graphics2D.draw(s);
+    }
+
+    public void fill(Shape s){
+        if (graphics2D!= null) graphics2D.fill(s);
+    }
+
     /**
      * Zeichnet ein Objekt der Klasse BufferedImage
      * @param bI Das zu zeichnende Objekt
