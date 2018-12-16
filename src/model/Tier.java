@@ -1,5 +1,6 @@
 package model;
 
+import control.ProgramController;
 import control.StaticData;
 import model.abitur.datenbanken.mysql.DatabaseConnector;
 import model.abitur.datenstrukturen.List;
@@ -15,9 +16,10 @@ public class Tier extends GraphicalObject implements Lootable{
     private String fleischArt = "",besonderheiten="";
     private double wachstum,wachstumsRate;
     private boolean grown;
+    private ProgramController pc;
 
-    public Tier(String unterart, int farmID){
-
+    public Tier(String unterart, int farmID, ProgramController pc){
+        this.pc = pc;
         switch(unterart){
             case "Kuh":
                 fleischArt = "Rind";
@@ -61,11 +63,13 @@ public class Tier extends GraphicalObject implements Lootable{
 
     @Override
     public void draw(DrawTool drawTool){
-        drawTool.setCurrentColor(100,50,5,255);
-        drawTool.drawFilledRectangle(((id-1)%4)*100+200,((id-1)/4)*100+20,100,100);
-        drawTool.setCurrentColor(255,255,255,255);
-        drawTool.drawText(((id-1)%4)*100+200,((id-1)/4)*100+33,""+Math.round(wachstum));
-        drawTool.drawImage(getMyImage(),((id-1)%4)*100+200,((id-1)/4)*100+20,100,100);
+        if (pc.getCurrentPanel() == 1) {
+            drawTool.setCurrentColor(100, 50, 5, 255);
+            drawTool.drawFilledRectangle(((id - 1) % 4) * 100 + 200, ((id - 1) / 4) * 100 + 20, 100, 100);
+            drawTool.setCurrentColor(255, 255, 255, 255);
+            drawTool.drawText(((id - 1) % 4) * 100 + 200, ((id - 1) / 4) * 100 + 33, "" + Math.round(wachstum));
+            drawTool.drawImage(getMyImage(), ((id - 1) % 4) * 100 + 200, ((id - 1) / 4) * 100 + 20, 100, 100);
+        }
     }
 
     @Override

@@ -10,38 +10,37 @@ import java.awt.geom.Rectangle2D;
 
 public class Player extends GraphicalObject {
 
-    private Rectangle2D.Double rec;
+    private Rectangle2D.Double pflanze,tier;
     private UIController uiController;
     private boolean clicked;
+    private ProgramController pc;
 
-    public Player(UIController uiController){
+    public Player(UIController uiController, ProgramController pc){
         this.uiController = uiController;
-        rec = new Rectangle2D.Double(350,740,100,30);
+        this.pc = pc;
+        pflanze = new Rectangle2D.Double(300,740,90,30);
+        tier = new Rectangle2D.Double(410,740,90,30);
     }
 
     @Override
     public void draw(DrawTool drawTool) {
         drawTool.setCurrentColor(0,0,0,255);
-        drawTool.fill(rec);
+        drawTool.fill(pflanze);
+        drawTool.fill(tier);
         drawTool.setCurrentColor(255,255,255,255);
-        if (ProgramController.currentPanel == 0) drawTool.drawText(380,760,"Pflanzen");
-        if (ProgramController.currentPanel == 1) drawTool.drawText(370,760,"Tiere");
+        drawTool.drawText(200,200,""+pc.getCurrentPanel());
+        drawTool.drawText(320,760,"Pflanzen");
+        drawTool.drawText(430,760,"Tiere");
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (rec.intersects(e.getX(),e.getY(),1,1) && !clicked) {
+        if (pflanze.intersects(e.getX(), e.getY(), 1, 1) && !clicked && pc.getCurrentPanel() == 1) {
             clicked = true;
-            switch (ProgramController.currentPanel) {
-                case 0:
-                    ProgramController.currentPanel = 1;
-                    uiController.selectDrawingPanel(1);
-                    break;
-                case 1:
-                    ProgramController.currentPanel = 0;
-                    uiController.selectDrawingPanel(0);
-                    break;
-            }
+            pc.setCurrentPanel(0);
+        }else if (tier.intersects(e.getX(), e.getY(), 1, 1) && !clicked && pc.getCurrentPanel() == 0) {
+            clicked = true;
+            pc.setCurrentPanel(1);
         }else{
             clicked = false;
         }

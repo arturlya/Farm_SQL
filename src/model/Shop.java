@@ -1,6 +1,7 @@
 package model;
 
 import control.Config;
+import control.ProgramController;
 import control.StaticData;
 import control.framework.UIController;
 import model.abitur.datenstrukturen.List;
@@ -21,9 +22,11 @@ public class Shop extends GraphicalObject{
     private double cooldown;
     private int id;
     private int farmID;
+    private ProgramController pc;
 
-    public Shop(UIController uiController,int farmID){
+    public Shop(UIController uiController,int farmID,ProgramController pc){
         this.uiController = uiController;
+        this.pc = pc;
         x = Config.WINDOW_WIDTH-50;
         y = 0;
         width = 200;
@@ -121,12 +124,12 @@ public class Shop extends GraphicalObject{
                         //System.out.println("BUY");
                         switch(buttons.getContent().getElement()){
                             case "Tier":
-                                Tier tier = new Tier(buttons.getContent().getUnterart(),farmID);
-                                uiController.drawObjectOnPanel(tier,1);
+                                Tier tier = new Tier(buttons.getContent().getUnterart(),farmID,pc);
+                                uiController.drawObject(tier);
                                 break;
                             case "Pflanze":
-                                Pflanze pflanze = new Pflanze(buttons.getContent().getUnterart(),farmID);
-                                uiController.drawObjectOnPanel(pflanze,0);
+                                Pflanze pflanze = new Pflanze(buttons.getContent().getUnterart(),farmID,pc);
+                                uiController.drawObject(pflanze);
                                 break;
                             case "Mitarbeiter":
 

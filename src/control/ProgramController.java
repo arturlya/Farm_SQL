@@ -10,7 +10,7 @@ import model.*;
 public class ProgramController {
 
     // Attribute
-    public static int currentPanel = 0;
+    private int currentPanel = 0;
 
     // Referenzen
     private UIController uiController;  // diese Referenz soll auf ein Objekt der Klasse uiController zeigen. Über dieses Objekt wird das Fenster gesteuert.
@@ -36,18 +36,18 @@ public class ProgramController {
         new SQL_Loader();
 
         Farm farm = new Farm();
-        uiController.drawObjectOnPanel(farm,0);
-        uiController.drawObjectOnPanel(farm,1);
-        Shop shop = new Shop(uiController,farm.getId());
-        uiController.drawObjectOnPanel(shop,0);
-        uiController.drawObjectOnPanel(shop,1);
-        uiController.drawObjectOnPanel(new Player(uiController),0);
-        uiController.drawObjectOnPanel(new Player(uiController),1);
+        uiController.drawObject(farm);
+        uiController.drawObject(farm);
+        Shop shop = new Shop(uiController,farm.getId(),this);
+        uiController.drawObject(shop);
+        uiController.drawObject(shop);
+        uiController.drawObject(new Player(uiController,this));
+        uiController.drawObject(new Player(uiController,this));
         //Tier tier = new Tier("Kuh",farm.getId());
         //Pflanze pflanze = new Pflanze("Weizen",1);
         //uiController.drawObject(pflanze);
         for (int i = 0; i < 20; i++) {
-            uiController.drawObjectOnPanel(new Pflanze("Weizen",1),0);
+            uiController.drawObject(new Pflanze("Weizen",1,this));
         }
 
         Lager lager = new Lager(1);
@@ -68,5 +68,11 @@ public class ProgramController {
         // Hier passiert noch nichts, das Programm läuft friedlich vor sich hin
     }
 
+    public int getCurrentPanel() {
+        return currentPanel;
+    }
 
+    public void setCurrentPanel(int currentPanel) {
+        this.currentPanel = currentPanel;
+    }
 }

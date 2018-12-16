@@ -1,5 +1,6 @@
 package model;
 
+import control.ProgramController;
 import control.StaticData;
 import model.abitur.datenbanken.mysql.DatabaseConnector;
 import model.abitur.datenstrukturen.List;
@@ -14,19 +15,22 @@ public class Pflanze extends GraphicalObject implements Lootable{
     private int id,feldbelegung;
     private double wachstum,wachstumsRate;
     private boolean readyToHarvest;
+    private ProgramController pc;
 
-    public Pflanze(String pflanzenArt, int farmID){
+    public Pflanze(String pflanzenArt, int farmID, ProgramController pc){
+        this.pc = pc;
         datenErstellung(pflanzenArt,farmID);
-        createAndSetNewImage("assets/"+pflanzenArt+".png");
     }
 
     @Override
     public void draw(DrawTool drawTool){
-        drawTool.setCurrentColor(100,50,5,220);
-        drawTool.drawFilledRectangle(((id-1)%8)*50+200,((id-1)/8)*50+20,50,50);
-        drawTool.setCurrentColor(255,255,255,255);
-        drawTool.drawText(((id-1)%8)*50+200,((id-1)/8)*50+33,""+Math.round(wachstum));
-        drawTool.drawImage(getMyImage(),((id-1)%8)*50+200,((id-1)/8)*50+20,50,50);
+        if (pc.getCurrentPanel() == 0) {
+            drawTool.setCurrentColor(100, 50, 5, 220);
+            drawTool.drawFilledRectangle(((id - 1) % 8) * 50 + 200, ((id - 1) / 8) * 50 + 20, 50, 50);
+            drawTool.setCurrentColor(255, 255, 255, 255);
+            drawTool.drawText(((id - 1) % 8) * 50 + 200, ((id - 1) / 8) * 50 + 33, "" + Math.round(wachstum));
+            drawTool.drawImage(getMyImage(), ((id - 1) % 8) * 50 + 200, ((id - 1) / 8) * 50 + 20, 50, 50);
+        }
     }
 
     @Override
@@ -46,11 +50,18 @@ public class Pflanze extends GraphicalObject implements Lootable{
             stmt = con.createStatement();
         }catch (Exception e) {System.out.println("Keine Connection");}
 
-        if (pflanzenArt.equalsIgnoreCase("Weizen")) feldbelegung = 1;
-        else if (pflanzenArt.equalsIgnoreCase("Mais")) feldbelegung = 1;
-        else if (pflanzenArt.equalsIgnoreCase("Apfel")) feldbelegung = 8;
-        else if (pflanzenArt.equalsIgnoreCase("Tomate")) feldbelegung = 2;
-        else if (pflanzenArt.equalsIgnoreCase("Reis")) feldbelegung = 1;
+        if (pflanzenArt.equalsIgnoreCase("Weizen")) {
+            feldbelegung = 1;
+            setMyImage(StaticData.weizen);
+        }else if (pflanzenArt.equalsIgnoreCase("Mais")) {
+            feldbelegung = 1;
+        }else if (pflanzenArt.equalsIgnoreCase("Apfel")) {
+            feldbelegung = 8;
+        }else if (pflanzenArt.equalsIgnoreCase("Tomate")) {
+            feldbelegung = 2;
+        }else if (pflanzenArt.equalsIgnoreCase("Reis")) {
+            feldbelegung = 1;
+        }
         else feldbelegung = 0;
 
         if (feldbelegung != 0) {
