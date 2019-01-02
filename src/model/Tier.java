@@ -1,5 +1,6 @@
 package model;
 
+import control.Farm;
 import control.ProgramController;
 import control.StaticData;
 import model.abitur.datenbanken.mysql.DatabaseConnector;
@@ -7,6 +8,8 @@ import model.abitur.datenstrukturen.List;
 import model.framework.GraphicalObject;
 import view.framework.DrawTool;
 
+import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 import java.sql.*;
 
 public class Tier extends GraphicalObject implements Lootable{
@@ -17,6 +20,8 @@ public class Tier extends GraphicalObject implements Lootable{
     private double wachstum,wachstumsRate;
     private boolean grown;
     private ProgramController pc;
+    private Rectangle2D.Double hitBox;
+    private double interactCooldown;
 
     public Tier(String unterart, int farmID, ProgramController pc){
         this.pc = pc;
@@ -57,6 +62,7 @@ public class Tier extends GraphicalObject implements Lootable{
         }
 
         createAndSetNewImage("assets/"+unterart+".png");
+        hitBox = new Rectangle2D.Double((id - 1) % 4 * 100 + 200, ((id - 1) / 4) * 100 + 20, 100, 100);
     }
 
 
@@ -82,6 +88,23 @@ public class Tier extends GraphicalObject implements Lootable{
         }
         if (cooldown == GameTime.tag) {
             cooldown = 0;
+        }
+        if(interactCooldown > 0){
+            interactCooldown = interactCooldown-1*dt;
+        }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e){
+        if (hitBox.intersects(e.getX(), e.getY(), 1, 1) && interactCooldown<=0) {
+            if (e.getButton() == MouseEvent.BUTTON1) {
+                Farm.kill(this);
+                interactCooldown = 2;
+            } else if (e.getButton() == MouseEvent.BUTTON2) {
+                System.out.println("Try to loot");
+                Farm.loot(this);
+                interactCooldown = 2;
+            }
         }
     }
 

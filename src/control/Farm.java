@@ -1,5 +1,6 @@
 package control;
 
+import control.framework.UIController;
 import model.*;
 import model.framework.GraphicalObject;
 import view.framework.DrawTool;
@@ -15,8 +16,10 @@ import java.sql.*;
 
 public class Farm extends GraphicalObject {
 
-    private Statement stmt;
-    BufferedImage grassImage;
+    private static Statement stmt;
+    public static Lager lager;
+    private BufferedImage grassImage;
+    private static UIController uiController;
 
 
     private boolean farmWindowOpened;
@@ -25,7 +28,8 @@ public class Farm extends GraphicalObject {
     private double farmGeld;
     private ResultSet result;
 
-    public Farm(){
+    public Farm(UIController uiController){
+        this.uiController = uiController;
         try{
             Connection con = DriverManager.getConnection("jdbc:mysql://mysql.webhosting24.1blu.de/db85565x2810214?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "s85565_2810214", "kkgbeste");
             stmt = con.createStatement();
@@ -51,6 +55,7 @@ public class Farm extends GraphicalObject {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        lager = new Lager(id);
     }
 
     @Override
@@ -58,9 +63,10 @@ public class Farm extends GraphicalObject {
         drawTool.drawImage(grassImage,0,0);
         drawTool.setCurrentColor(0,0,0,100);
         drawTool.drawFilledRectangle(farmWindowFrame);
-        drawTool.setCurrentColor(0,0,0,255);
+        drawTool.setCurrentColor(255,255,255,255);
         drawTool.drawText(x+80,y+40,"FARM");
         drawTool.drawText(x+20,y+120,"Geld : "+farmGeld);
+
     }
 
     @Override
@@ -91,41 +97,47 @@ public class Farm extends GraphicalObject {
             farmWindowOpened = false;}
     }
 
-    public void kill(Tier tier, Lager lager){
+    public static void kill(Tier tier){
         int fleischMenge;
         String fleischArt;
-        fleischArt = "Rind";
-        if(tier.getFleischArt().equals(fleischArt)){
-            if(tier.getWachstum() >= 15){
-                fleischMenge = (int)(Math.random()*5+1);
-                lager.storageResource(new Resource(fleischArt,fleischMenge));
-                System.out.println("Tier für "+fleischMenge+" Fleisch getötet");
-            }else if(tier.getWachstum() >= 7){
-
-                fleischMenge = (int)(Math.random()*3+1);
-                lager.storageResource(new Resource(fleischArt,fleischMenge));
-                System.out.println("Tier für "+fleischMenge+" Fleisch getötet");
-            }
-            try{
-                Connection con = DriverManager.getConnection("jdbc:mysql://mysql.webhosting24.1blu.de/db85565x2810214?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "s85565_2810214", "kkgbeste");
-                stmt = con.createStatement();
-                stmt.execute("DELETE FROM "+StaticData.tier+" WHERE tierID = "+tier.getId()+";");
-            }catch(SQLException e){e.printStackTrace();}
+        fleischArt = tier.getFleischArt();
+        if(tier.getWachstum() >= 15){
+            fleischMenge = (int)(Math.random()*5+1);
+            lager.storageResource(new Resource(fleischArt,fleischMenge));
+            System.out.println("Tier für "+fleischMenge+" Fleisch getötet");
+        }else if(tier.getWachstum() >= 7){
+            fleischMenge = (int)(Math.random()*3+1);
+            lager.storageResource(new Resource(fleischArt,fleischMenge));
+            System.out.println("Tier für "+fleischMenge+" Fleisch getötet");
+        }else{
+            System.out.println("Das Tier ist zu jung um es zu töten");
         }
+        try{
+            Connection con = DriverManager.getConnection("jdbc:mysql://mysql.webhosting24.1blu.de/db85565x2810214?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "s85565_2810214", "kkgbeste");
+            stmt = con.createStatement();
+            stmt.execute("DELETE FROM "+StaticData.tier+" WHERE tierID = "+tier.getId()+";");
+            uiController.removeObject(tier);
+            System.out.println("Deleted animal");
+        }catch(SQLException e){e.printStackTrace();}
     }
 
-    public void loot(Lootable lootable, Lager lager){
+    public static void loot(Lootable lootable){
         if(lootable instanceof Tier){
             if(!((Tier) lootable).getBesonderheiten().equals("leer")){
                 if(((Tier) lootable).isGrown() && ((Tier) lootable).getCooldown() <= 0){
                     ((Tier) lootable).setCooldown(GameTime.tag+7);
                     lager.storageResource(new Resource(((Tier) lootable).getBesonderheiten(),1));
+                    System.out.println(((Tier) lootable).getBesonderheiten()+" vom Tier bekommen");
                 }
             }
+        }else if(lootable instanceof Pflanze){
+
         }
     }
 
     public int getId() {
         return id;
     }
+
+    //  public static Lager getLager(){return lager;}
 }

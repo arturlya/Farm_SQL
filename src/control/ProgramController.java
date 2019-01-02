@@ -35,7 +35,7 @@ public class ProgramController {
         //new SQL_Demo();
         new SQL_Loader();
 
-        Farm farm = new Farm();
+        Farm farm = new Farm(uiController);
         uiController.drawObject(farm);
         uiController.drawObject(farm);
         Shop shop = new Shop(uiController,farm.getId(),this);
@@ -50,11 +50,8 @@ public class ProgramController {
             uiController.drawObject(new Pflanze("Weizen",1,this));
         }
 
-        Lager lager = new Lager(1);
-        lager.storageResource(new Resource("Semelsalad", 35));
-        lager.storageResource(new Resource("Weizen",18));
-        lager.removeResource("Semelsalad",9);
-        lager.removeResource("Weizen",11);
+
+
         //farm.kill(tier,lager);
 
         uiController.drawObject(new GameTime());
