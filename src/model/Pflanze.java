@@ -48,6 +48,9 @@ public class Pflanze extends GraphicalObject implements Lootable{
         if (wachstum >= 15 & !readyToHarvest){
             updateDatenbank();
             readyToHarvest = true;
+            try{
+                stmt.execute("UPDATE "+StaticData.pflanze+" SET readyToHarvest = 1 WHERE "+id+" = pflanzenID;");
+            }catch(Exception e){System.err.println(e);}
         }
         if (cooldown == GameTime.tag) {
             cooldown = 0;
@@ -90,7 +93,7 @@ public class Pflanze extends GraphicalObject implements Lootable{
         }
 
         try {
-            stmt.execute("INSERT INTO "+StaticData.pflanze+" (pflanzenArt,wachstumsRate,wachstum,feldBelegung,farmID) VALUES ('" + pflanzenArt + "','" + wachstumsRate + "'," + 0 + "," + feldbelegung + "," + farmID + ");");
+            stmt.execute("INSERT INTO "+StaticData.pflanze+" (pflanzenArt,wachstumsRate,wachstum,feldBelegung,farmID,readyToHarvest) VALUES ('" + pflanzenArt + "','" + wachstumsRate + "'," + 0 + "," + feldbelegung + "," + farmID + ",0);");
         }catch (Exception e) {
             System.out.println("Keine Werte für Pflanze");
         }

@@ -23,6 +23,8 @@ public class Tier extends GraphicalObject implements Lootable{
     private Rectangle2D.Double hitBox;
     private double interactCooldown;
 
+
+
     public Tier(String unterart, int farmID, ProgramController pc){
         this.pc = pc;
         switch(unterart){
@@ -48,7 +50,7 @@ public class Tier extends GraphicalObject implements Lootable{
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://mysql.webhosting24.1blu.de/db85565x2810214?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "s85565_2810214", "kkgbeste");
             stmt = con.createStatement();
-            stmt.execute("INSERT INTO "+StaticData.tier+"(fleischArt, besonderheiten, wachstumsRate,wachstum,farmID) VALUES ('"+fleischArt+"','"+besonderheiten+"',"+wachstumsRate+","+wachstum+","+farmID+");");
+            stmt.execute("INSERT INTO "+StaticData.tier+"(fleischArt, besonderheiten, wachstumsRate,wachstum,farmID,lootable) VALUES ('"+fleischArt+"','"+besonderheiten+"',"+wachstumsRate+","+wachstum+","+farmID+",0);");
             System.out.println("Got new animal");
             ResultSet result = stmt.executeQuery("SELECT * FROM "+StaticData.tier+";");
             int i=0;
@@ -85,6 +87,9 @@ public class Tier extends GraphicalObject implements Lootable{
         if (wachstum >= fullyGrown & !grown){
             updateDatenbank();
             grown = true;
+            try{
+                stmt.execute("UPDATE "+StaticData.tier+" SET lootable = 1 WHERE "+id+" = tierID;");
+            }catch(Exception e){System.err.println(e);}
         }
         if (cooldown == GameTime.tag) {
             cooldown = 0;

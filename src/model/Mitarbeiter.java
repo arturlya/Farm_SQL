@@ -8,9 +8,20 @@ import java.sql.*;
 public class Mitarbeiter extends GraphicalObject {
 
     private Statement stmt;
+    private String job;
+    private int arbeitsPlatz;
     private int id;
+    private double lohn;
 
-    public Mitarbeiter(){
+    public Mitarbeiter(String job,int arbeitsPlatz){
+        this.job = job;
+        this.arbeitsPlatz = arbeitsPlatz;
+        lohn = Math.random()*4+5;
+        datenErstellung(job,arbeitsPlatz,lohn);
+    }
+
+    @Override
+    public void update(double dt){
 
     }
 
@@ -21,7 +32,7 @@ public class Mitarbeiter extends GraphicalObject {
         }catch (Exception e) {System.out.println("Keine Connection");}
 
         try {
-            stmt.execute("INSERT INTO "+ StaticData.pflanze+" (job,arbeitsplatz,lohn) VALUES ('" + job + "'," + arbeitsplatz + ","+lohn+");");
+            stmt.execute("INSERT INTO "+ StaticData.mitarbieter+" (job,arbeitsplatz,lohn) VALUES ('" + job + "'," + arbeitsplatz + ","+lohn+");");
         }catch (Exception e) {
             System.out.println("Keine Werte für Mitarbeiter");
         }
@@ -39,10 +50,6 @@ public class Mitarbeiter extends GraphicalObject {
     }
 
     private void updateDatenbank(){
-        try {
-            stmt.execute("UPDATE "+ StaticData.mitarbieter+" SET wachstum = "+id+" WHERE pflanzenID="+id+";");
-        } catch (SQLException e) {
-            System.out.println("Die Daten von Mitarbeiter wurden nicht updatet");
-        }
+
     }
 }
