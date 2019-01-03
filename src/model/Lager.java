@@ -75,6 +75,29 @@ public class Lager {
         }
     }
 
+    public boolean hasResource(String name){
+        lager.toFirst();
+        while(lager.hasAccess()){
+            if(lager.getContent().getName().equals(name)){
+                return true;
+            }
+            lager.next();
+        }
+        return false;
+    }
+
+    public int getResourceAmmount(String name){
+        if(hasResource(name)){
+            lager.toFirst();
+            while(lager.hasAccess()){
+                if(lager.getContent().getName().equals(name)){
+                    return lager.getContent().getAmmount();
+                }
+            }
+        }
+        return -1;
+    }
+
     private void loadLagerData(int farmID){
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://mysql.webhosting24.1blu.de/db85565x2810214?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "s85565_2810214", "kkgbeste");

@@ -1,5 +1,6 @@
 package model;
 
+import control.Farm;
 import control.ProgramController;
 import control.StaticData;
 import model.abitur.datenbanken.mysql.DatabaseConnector;
@@ -7,6 +8,8 @@ import model.abitur.datenstrukturen.List;
 import model.framework.GraphicalObject;
 import view.framework.DrawTool;
 
+import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 import java.sql.*;
 
 public class Pflanze extends GraphicalObject implements Lootable{
@@ -16,10 +19,15 @@ public class Pflanze extends GraphicalObject implements Lootable{
     private double wachstum,wachstumsRate;
     private boolean readyToHarvest;
     private ProgramController pc;
+    private String pflanzenArt;
+    private Rectangle2D.Double hitBox;
+    private int cooldown;
 
     public Pflanze(String pflanzenArt, int farmID, ProgramController pc){
         this.pc = pc;
+        this.pflanzenArt = pflanzenArt;
         datenErstellung(pflanzenArt,farmID);
+        hitBox = new Rectangle2D.Double(((id - 1) % 8) * 50 + 200, ((id - 1) / 8) * 50 + 20, 50, 50);
     }
 
     @Override
@@ -41,7 +49,20 @@ public class Pflanze extends GraphicalObject implements Lootable{
             updateDatenbank();
             readyToHarvest = true;
         }
+        if (cooldown == GameTime.tag) {
+            cooldown = 0;
+        }
+    }
 
+    @Override
+    public void mouseClicked(MouseEvent e){
+        if (pc.getCurrentPanel() == 0) {
+            if (hitBox.intersects(e.getX(), e.getY(), 1, 1)) {
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    Farm.loot(this);
+                }
+            }
+        }
     }
 
     private void datenErstellung(String pflanzenArt, int farmID){
@@ -95,5 +116,14 @@ public class Pflanze extends GraphicalObject implements Lootable{
 
     public boolean isReadyToHarvest() {
         return readyToHarvest;
+    }
+
+    public String getPflanzenArt(){return pflanzenArt;}
+    public int getCooldown() {
+        return cooldown;
+    }
+
+    public void setCooldown(int cooldown) {
+        this.cooldown = cooldown;
     }
 }

@@ -96,14 +96,15 @@ public class Tier extends GraphicalObject implements Lootable{
 
     @Override
     public void mouseClicked(MouseEvent e){
-        if (hitBox.intersects(e.getX(), e.getY(), 1, 1) && interactCooldown<=0) {
-            if (e.getButton() == MouseEvent.BUTTON1) {
-                Farm.kill(this);
-                interactCooldown = 2;
-            } else if (e.getButton() == MouseEvent.BUTTON2) {
-                System.out.println("Try to loot");
-                Farm.loot(this);
-                interactCooldown = 2;
+        if (pc.getCurrentPanel() == 1) {
+            if (hitBox.intersects(e.getX(), e.getY(), 1, 1) && interactCooldown <= 0) {
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    Farm.kill(this);
+                    interactCooldown = 2;
+                } else if (e.getButton() == MouseEvent.BUTTON3) {
+                    Farm.loot(this);
+                    interactCooldown = 2;
+                }
             }
         }
     }

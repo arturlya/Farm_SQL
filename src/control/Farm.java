@@ -131,7 +131,11 @@ public class Farm extends GraphicalObject {
                 }
             }
         }else if(lootable instanceof Pflanze){
-
+            if(((Pflanze) lootable).isReadyToHarvest() && ((Pflanze) lootable).getCooldown() <= 0) {
+                ((Pflanze) lootable).setCooldown(GameTime.tag+7);
+                lager.storageResource(new Resource(((Pflanze) lootable).getPflanzenArt(), 1));
+                System.out.println("Ernte 1 " + ((Pflanze) lootable).getPflanzenArt());
+            }
         }
     }
 
