@@ -84,6 +84,7 @@ public class SQL_Loader {
                     "wachstum double NOT NULL,"+
                     "feldBelegung int NOT NULL,"+
                     "farmID int NOT NULL,"+
+                    "readyToHarvest TINYINT(1) NOT NULL,"+
                     "PRIMARY KEY(pflanzenID),"+
                     "FOREIGN KEY(farmID) REFERENCES "+StaticData.farm+"(farmID)"+
                     ");");
@@ -97,6 +98,7 @@ public class SQL_Loader {
                     "wachstumsRate double NOT NULL,"+
                     "wachstum double NOT NULL,"+
                     "farmID int NOT NULL,"+
+                    "lootable TINYINT(1) NOT NULL,"+
                     "PRIMARY KEY(tierID),"+
                     "FOREIGN KEY(farmID) REFERENCES "+StaticData.farm+"(farmID)"+
                     ");");
