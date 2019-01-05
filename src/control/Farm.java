@@ -67,6 +67,8 @@ public class Farm extends GraphicalObject {
         drawTool.drawText(x+80,y+40,"FARM");
         drawTool.drawText(x+20,y+120,"Geld : "+farmGeld);
         drawTool.drawText(x+20,y+160,"Lagerplatz: "+lager.getBelegterPlatz()+"/"+lager.getLagerplatz());
+        drawTool.drawText(x+20,y+200,"Pflanzenmitarbeiter: "+Mitarbeiter.getNumberOfPflanzenMitarbeiter());
+        drawTool.drawText(x+20,y+240,"Tiermitarbeiter: "+Mitarbeiter.getNumberOfTierMitarbeiter());
     }
 
     @Override

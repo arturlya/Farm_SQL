@@ -8,7 +8,7 @@ import java.sql.*;
 
 public class Mitarbeiter extends GraphicalObject {
 
-    private Statement stmt;
+    private static Statement stmt;
     private String job;
     private int arbeitsPlatz;
     private int id;
@@ -16,7 +16,7 @@ public class Mitarbeiter extends GraphicalObject {
     private boolean working;
     private double workCooldown;
 
-    private ResultSet resultSet;
+    private static ResultSet resultSet;
 
 
     public Mitarbeiter(String job,int arbeitsPlatz){
@@ -116,4 +116,30 @@ public class Mitarbeiter extends GraphicalObject {
         return id;
     }
 
+
+    public static int getNumberOfPflanzenMitarbeiter(){
+
+        try {
+            resultSet = stmt.executeQuery("SELECT COUNT(*) FROM (SELECT * FROM "+StaticData.mitarbieter+" WHERE job = 'Pflanze') AS anzahl");
+            while(resultSet.next()){
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    public static int getNumberOfTierMitarbeiter(){
+
+        try {
+            resultSet = stmt.executeQuery("SELECT COUNT(*) FROM (SELECT * FROM "+StaticData.mitarbieter+" WHERE job = 'Tier') AS anzahl");
+            while(resultSet.next()){
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 }
