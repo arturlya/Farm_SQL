@@ -101,11 +101,11 @@ public class Farm extends GraphicalObject {
         int fleischMenge;
         String fleischArt;
         fleischArt = tier.getFleischArt();
-        if(tier.getWachstum() >= 15){
-            fleischMenge = (int)(Math.random()*5+1);
+        if(tier.getWachstum() >= tier.getFullyGrown()){
+            fleischMenge = (int)(Math.random()*4+4);
             lager.storageResource(new Resource(fleischArt,fleischMenge));
             System.out.println("Tier für "+fleischMenge+" Fleisch getötet");
-        }else if(tier.getWachstum() >= 7){
+        }else if(tier.getWachstum() >= tier.getFullyGrown() / 2){
             fleischMenge = (int)(Math.random()*3+1);
             lager.storageResource(new Resource(fleischArt,fleischMenge));
             System.out.println("Tier für "+fleischMenge+" Fleisch getötet");
@@ -132,7 +132,7 @@ public class Farm extends GraphicalObject {
             }
         }else if(lootable instanceof Pflanze){
             if(((Pflanze) lootable).isReadyToHarvest() && ((Pflanze) lootable).getCooldown() <= 0) {
-                ((Pflanze) lootable).setCooldown(GameTime.tag+7);
+                ((Pflanze) lootable).setToStart(GameTime.tag+7);
                 lager.storageResource(new Resource(((Pflanze) lootable).getPflanzenArt(), 1));
                 System.out.println("Ernte 1 " + ((Pflanze) lootable).getPflanzenArt());
             }
@@ -144,4 +144,12 @@ public class Farm extends GraphicalObject {
     }
 
     //  public static Lager getLager(){return lager;}
+
+    public boolean isFarmWindowOpened() {
+        return farmWindowOpened;
+    }
+
+    public double getFarmGeld() {
+        return farmGeld;
+    }
 }

@@ -28,7 +28,6 @@ public class Player extends GraphicalObject {
         drawTool.fill(pflanze);
         drawTool.fill(tier);
         drawTool.setCurrentColor(255,255,255,255);
-        drawTool.drawText(200,200,""+pc.getCurrentPanel());
         drawTool.drawText(320,760,"Pflanzen");
         drawTool.drawText(430,760,"Tiere");
     }
@@ -44,9 +43,5 @@ public class Player extends GraphicalObject {
         }else{
             clicked = false;
         }
-    }
-
-    private void switchDrawingPanel(){
-
     }
 }

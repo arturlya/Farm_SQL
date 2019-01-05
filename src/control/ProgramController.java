@@ -14,6 +14,8 @@ public class ProgramController {
 
     // Referenzen
     private UIController uiController;  // diese Referenz soll auf ein Objekt der Klasse uiController zeigen. Über dieses Objekt wird das Fenster gesteuert.
+    private Farm farm;
+    private Kunde kunde1,kunde2,kunde3;
 
     /**
      * Konstruktor
@@ -35,7 +37,7 @@ public class ProgramController {
         //new SQL_Demo();
         new SQL_Loader();
 
-        Farm farm = new Farm(uiController);
+        farm = new Farm(uiController);
         uiController.drawObject(farm);
         uiController.drawObject(farm);
         Shop shop = new Shop(uiController,farm.getId(),this);
@@ -49,11 +51,12 @@ public class ProgramController {
         for (int i = 0; i < 20; i++) {
             uiController.drawObject(new Pflanze("Weizen",1,this));
         }
-
-
-
-        //farm.kill(tier,lager);
-
+        kunde1 = new Kunde(farm,1);
+        kunde2 = new Kunde(farm,2);
+        kunde3 = new Kunde(farm,3);
+        uiController.drawObject(kunde1);
+        uiController.drawObject(kunde2);
+        uiController.drawObject(kunde3);
         uiController.drawObject(new GameTime());
     }
 
@@ -62,7 +65,9 @@ public class ProgramController {
      * @param dt Die Zeit in Sekunden, die seit dem letzten Aufruf der Methode vergangen ist.
      */
     public void updateProgram(double dt){
-        // Hier passiert noch nichts, das Programm läuft friedlich vor sich hin
+        if (kunde1.isNeuerKunde()) kunde1.kundenErstellung();
+        if (kunde2.isNeuerKunde()) kunde2 = new Kunde(farm,2);
+        if (kunde3.isNeuerKunde()) kunde3 = new Kunde(farm,3);
     }
 
     public int getCurrentPanel() {

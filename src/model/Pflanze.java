@@ -15,7 +15,7 @@ import java.sql.*;
 public class Pflanze extends GraphicalObject implements Lootable{
 
     private Statement stmt;
-    private int id,feldbelegung;
+    private int id,feldbelegung,fullyGrown;
     private double wachstum,wachstumsRate;
     private boolean readyToHarvest;
     private ProgramController pc;
@@ -36,21 +36,18 @@ public class Pflanze extends GraphicalObject implements Lootable{
             drawTool.setCurrentColor(100, 50, 5, 220);
             drawTool.drawFilledRectangle(((id - 1) % 8) * 50 + 200, ((id - 1) / 8) * 50 + 20, 50, 50);
             drawTool.setCurrentColor(255, 255, 255, 255);
-            drawTool.drawText(((id - 1) % 8) * 50 + 200, ((id - 1) / 8) * 50 + 33, "" + Math.round((wachstum/15)*100) + "%");
+            drawTool.drawText(((id - 1) % 8) * 50 + 200, ((id - 1) / 8) * 50 + 33, "" + Math.round((wachstum/fullyGrown)*100) + "%");
             drawTool.drawImage(getMyImage(), ((id - 1) % 8) * 50 + 200, ((id - 1) / 8) * 50 + 20, 50, 50);
         }
     }
 
     @Override
     public void update(double dt){
-        if (wachstum < 15) wachstum += wachstumsRate * dt;
-        if (wachstum % 2 > 0 && wachstum % 2 < 0.1) updateDatenbank();
-        if (wachstum >= 15 & !readyToHarvest){
-            updateDatenbank();
+        if (wachstum < fullyGrown && cooldown == 0) wachstum += wachstumsRate * dt * GameTime.deltaMultiplier;
+        if (wachstum % 2 > 0 && wachstum % 2 < 0.1 && cooldown == 0) updateDatenbank(0);
+        if (wachstum >= fullyGrown & !readyToHarvest){
+            updateDatenbank(1);
             readyToHarvest = true;
-            try{
-                stmt.execute("UPDATE "+StaticData.pflanze+" SET readyToHarvest = 1 WHERE "+id+" = pflanzenID;");
-            }catch(Exception e){System.err.println(e);}
         }
         if (cooldown == GameTime.tag) {
             cooldown = 0;
@@ -76,24 +73,26 @@ public class Pflanze extends GraphicalObject implements Lootable{
 
         if (pflanzenArt.equalsIgnoreCase("Weizen")) {
             feldbelegung = 1;
+            fullyGrown = 15;
+            wachstumsRate = 1/(Math.random()*3+13.5);
             setMyImage(StaticData.weizen);
         }else if (pflanzenArt.equalsIgnoreCase("Mais")) {
             feldbelegung = 1;
+            fullyGrown = 20;
         }else if (pflanzenArt.equalsIgnoreCase("Apfel")) {
             feldbelegung = 8;
+            fullyGrown = 40;
         }else if (pflanzenArt.equalsIgnoreCase("Tomate")) {
             feldbelegung = 2;
+            fullyGrown = 25;
         }else if (pflanzenArt.equalsIgnoreCase("Reis")) {
             feldbelegung = 1;
+            fullyGrown = 20;
         }
         else feldbelegung = 0;
 
-        if (feldbelegung != 0) {
-            wachstumsRate = 1/(Math.random()*3+13.5);
-        }
-
         try {
-            stmt.execute("INSERT INTO "+StaticData.pflanze+" (pflanzenArt,wachstumsRate,wachstum,feldBelegung,farmID,readyToHarvest) VALUES ('" + pflanzenArt + "','" + wachstumsRate + "'," + 0 + "," + feldbelegung + "," + farmID + ",0);");
+            stmt.execute("INSERT INTO "+StaticData.pflanze+" (pflanzenArt,wachstumsRate,wachstum,feldBelegung,farmID,readyToHarvest,cooldown) VALUES ('" + pflanzenArt + "','" + wachstumsRate + "'," + 0 + "," + feldbelegung + "," + farmID + ",0,0);");
         }catch (Exception e) {
             System.out.println("Keine Werte für Pflanze");
         }
@@ -109,12 +108,19 @@ public class Pflanze extends GraphicalObject implements Lootable{
         }
     }
 
-    private void updateDatenbank(){
+    private void updateDatenbank(int fullyGrown){
         try {
-            stmt.execute("UPDATE "+ StaticData.pflanze+" SET wachstum = "+Math.round(wachstum)+" WHERE pflanzenID="+id+";");
+            stmt.execute("UPDATE "+ StaticData.pflanze+" SET wachstum = "+Math.round(wachstum)+", readyToHarvest = "+fullyGrown+" WHERE pflanzenID="+id+";");
         } catch (SQLException e) {
             System.out.println("Die Daten von Pflanze wurden nicht updatet");
         }
+    }
+
+    public void setToStart(int cooldown){
+        wachstum = 0;
+        readyToHarvest = false;
+        this.cooldown = cooldown;
+        updateDatenbank(0);
     }
 
     public boolean isReadyToHarvest() {
@@ -122,11 +128,8 @@ public class Pflanze extends GraphicalObject implements Lootable{
     }
 
     public String getPflanzenArt(){return pflanzenArt;}
+
     public int getCooldown() {
         return cooldown;
-    }
-
-    public void setCooldown(int cooldown) {
-        this.cooldown = cooldown;
     }
 }

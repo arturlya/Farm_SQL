@@ -75,14 +75,14 @@ public class Tier extends GraphicalObject implements Lootable{
             drawTool.setCurrentColor(100, 50, 5, 255);
             drawTool.drawFilledRectangle(((id - 1) % 4) * 100 + 200, ((id - 1) / 4) * 100 + 20, 100, 100);
             drawTool.setCurrentColor(255, 255, 255, 255);
-            drawTool.drawText(((id - 1) % 4) * 100 + 200, ((id - 1) / 4) * 100 + 33, "" + Math.round(wachstum));
+            drawTool.drawText(((id - 1) % 4) * 100 + 200, ((id - 1) / 4) * 100 + 33, "" + Math.round((wachstum/fullyGrown)*100)+ "%");
             drawTool.drawImage(getMyImage(), ((id - 1) % 4) * 100 + 200, ((id - 1) / 4) * 100 + 20, 100, 100);
         }
     }
 
     @Override
     public void update(double dt){
-        if (wachstum < fullyGrown) wachstum += wachstumsRate * dt;
+        if (wachstum < fullyGrown) wachstum += wachstumsRate * dt * GameTime.deltaMultiplier;
         if (wachstum % 2 > 0 && wachstum % 2 < 0.1) updateDatenbank();
         if (wachstum >= fullyGrown & !grown){
             updateDatenbank();
@@ -141,5 +141,9 @@ public class Tier extends GraphicalObject implements Lootable{
 
     public void setCooldown(int cooldown) {
         this.cooldown = cooldown;
+    }
+
+    public int getFullyGrown() {
+        return fullyGrown;
     }
 }

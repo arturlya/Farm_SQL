@@ -10,7 +10,7 @@ public class GameTime extends GraphicalObject {
     public static int tag;
 
     public GameTime(){
-
+        deltaMultiplier = 3;
     }
 
     @Override
