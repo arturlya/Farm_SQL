@@ -120,4 +120,12 @@ public class Lager {
         }
 
     }
+
+    public int getLagerplatz() {
+        return lagerplatz;
+    }
+
+    public int getBelegterPlatz() {
+        return belegterPlatz;
+    }
 }

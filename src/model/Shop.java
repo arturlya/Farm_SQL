@@ -1,6 +1,7 @@
 package model;
 
 import control.Config;
+import control.Farm;
 import control.ProgramController;
 import control.StaticData;
 import control.framework.UIController;
@@ -49,8 +50,8 @@ public class Shop extends GraphicalObject{
         }
 
         buttons = new List<>();
-        addShopElement(new ShopElement("Tier","Huhn",19.99,x+15,y+50));
-        addShopElement(new ShopElement("Pflanze","Weizen",0.5,x+115,y+50));
+        addShopElement(new ShopElement("Tier","Huhn",50,x+15,y+50));
+        addShopElement(new ShopElement("Pflanze","Weizen",5,x+115,y+50));
     }
 
     @Override

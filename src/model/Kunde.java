@@ -71,7 +71,7 @@ public class Kunde extends GraphicalObject {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (hitboxKauf.intersects(e.getX(),e.getY(),1,1) && farm.lager.getResourceAmmount(wunsch) <= anzahl) {
+        if (hitboxKauf.intersects(e.getX(),e.getY(),1,1) && farm.lager.getResourceAmmount(wunsch) >= anzahl) {
             gekauft = true;
             farm.lager.removeResource(wunsch,anzahl);
             try {

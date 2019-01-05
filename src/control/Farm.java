@@ -66,7 +66,7 @@ public class Farm extends GraphicalObject {
         drawTool.setCurrentColor(255,255,255,255);
         drawTool.drawText(x+80,y+40,"FARM");
         drawTool.drawText(x+20,y+120,"Geld : "+farmGeld);
-
+        drawTool.drawText(x+20,y+160,"Lagerplatz: "+lager.getBelegterPlatz()+"/"+lager.getLagerplatz());
     }
 
     @Override
