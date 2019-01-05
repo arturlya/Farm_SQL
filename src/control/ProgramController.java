@@ -58,6 +58,10 @@ public class ProgramController {
         uiController.drawObject(kunde2);
         uiController.drawObject(kunde3);
         uiController.drawObject(new GameTime());
+        Mitarbeiter mitarbeiter = new Mitarbeiter("Pflanze",farm.getId());
+        uiController.drawObject(mitarbeiter);
+        Mitarbeiter mitarbeiter1 = new Mitarbeiter("Tier",farm.getId());
+        uiController.drawObject(mitarbeiter1);
     }
 
     /**

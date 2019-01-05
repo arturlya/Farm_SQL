@@ -52,6 +52,8 @@ public class Shop extends GraphicalObject{
         buttons = new List<>();
         addShopElement(new ShopElement("Tier","Huhn",50,x+15,y+50));
         addShopElement(new ShopElement("Pflanze","Weizen",5,x+115,y+50));
+        addShopElement(new ShopElement("Mitarbeiter","Pflanze",10,x+15,y+200));
+        addShopElement(new ShopElement("Mitarbeiter","Tier",10,x+115,y+200));
     }
 
     @Override
@@ -75,15 +77,25 @@ public class Shop extends GraphicalObject{
             x = Config.WINDOW_WIDTH-width;
             buttons.toFirst();
             for(int i=0;buttons.hasAccess();buttons.next()) {
-                buttons.getContent().setX(x + 15 +i*100);
-                i++;
+                if(i%2 == 0) {
+                    buttons.getContent().setX(x + 115);
+                    i++;
+                }else{
+                    buttons.getContent().setX(x+15);
+                    i++;
+                }
             }
         }else{
             x = Config.WINDOW_WIDTH-50;
             buttons.toFirst();
             for(int i=0;buttons.hasAccess();buttons.next()) {
-                buttons.getContent().setX(x + 15 +i*100);
-                i++;
+                if(i%2 == 0) {
+                    buttons.getContent().setX(x + 115);
+                    i++;
+                }else{
+                    buttons.getContent().setX(x+15);
+                    i++;
+                }
             }
         }
         if(cooldown > 0){
@@ -133,7 +145,8 @@ public class Shop extends GraphicalObject{
                                 uiController.drawObject(pflanze);
                                 break;
                             case "Mitarbeiter":
-
+                                Mitarbeiter mitarbeiter = new Mitarbeiter(buttons.getContent().getUnterart(),farmID);
+                                uiController.drawObject(mitarbeiter);
                                 break;
                             case "Upgrade":
 

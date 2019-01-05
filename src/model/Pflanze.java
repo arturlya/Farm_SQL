@@ -52,6 +52,13 @@ public class Pflanze extends GraphicalObject implements Lootable{
         if (cooldown == GameTime.tag) {
             cooldown = 0;
         }
+        if(kuemmert_sich.hasRelation(id)){
+            Farm.loot(this);
+            try{
+                stmt.execute("UPDATE "+StaticData.pflanze+" SET readyToHarvest = 0 WHERE "+id+" = pflanzenID;");
+            }catch(Exception e){System.err.println(e);}
+            wachstum = 7;
+        }
     }
 
     @Override
@@ -60,6 +67,10 @@ public class Pflanze extends GraphicalObject implements Lootable{
             if (hitBox.intersects(e.getX(), e.getY(), 1, 1)) {
                 if (e.getButton() == MouseEvent.BUTTON3) {
                     Farm.loot(this);
+                    try{
+                        stmt.execute("UPDATE "+StaticData.pflanze+" SET readyToHarvest = 0 WHERE "+id+" = pflanzenID;");
+                    }catch(Exception err){System.err.println(err);}
+                    wachstum = 7;
                 }
             }
         }
@@ -132,4 +143,9 @@ public class Pflanze extends GraphicalObject implements Lootable{
     public int getCooldown() {
         return cooldown;
     }
+
+    public void setCooldown(int cooldown) {
+        this.cooldown = cooldown;
+    }
+    public int getID(){return id;}
 }

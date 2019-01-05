@@ -17,13 +17,14 @@ public class StaticData {
     public static final String mutationskammer = "MarArtFarm_Mutationskammer";
     public static final String wird_gekreuzt = "MarArtFarm_wird_gekreuzt";
     public static final String kuemmert_sich = "MarArtFarm_kümmert_sich";
+    public static final String fuettert = "MarArtFarm_fuettert";
 
     public static BufferedImage huhn;
     public static BufferedImage weizen;
 
     static {
         try {
-            huhn = ImageIO.read(new File("assets/Huhn.png"));
+            huhn = ImageIO.read(new File("assets/Tier.png"));
             weizen = ImageIO.read(new File("assets/Weizen.png"));
         } catch (IOException e) {
             if ( Config.INFO_MESSAGES) System.out.println("Laden eines Bildes fehlgeschlagen.");

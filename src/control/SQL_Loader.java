@@ -18,6 +18,7 @@ public class SQL_Loader {
             Connection con = DriverManager.getConnection("jdbc:mysql://mysql.webhosting24.1blu.de/db85565x2810214?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "s85565_2810214", "kkgbeste");
             Statement stmt = con.createStatement();
 
+            try { stmt.execute("DROP TABLE "+StaticData.fuettert+";"); } catch (Exception e) { System.out.println("Tabelle Kümmert sich nicht gelöscht."); }
             try { stmt.execute("DROP TABLE "+StaticData.kuemmert_sich+";"); } catch (Exception e) { System.out.println("Tabelle Kümmert sich nicht gelöscht."); }
             try { stmt.execute("DROP TABLE "+StaticData.mutationskammer+";"); } catch (Exception e) { System.out.println("Tabelle nicht gelöscht."); }
             try { stmt.execute("DROP TABLE "+StaticData.wird_gekreuzt+";"); } catch (Exception e) { System.out.println("Tabelle nicht gelöscht."); }
@@ -41,6 +42,7 @@ public class SQL_Loader {
 
             try{stmt.execute("DELETE FROM "+StaticData.mitarbieter+" WHERE mitarbeiterID>0;");}catch (SQLException e){e.printStackTrace();}
 */
+
             try { stmt.execute("DROP TABLE " + StaticData.pflanze + ";"); } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("Tabelle Pflanze nicht gelöscht.");
@@ -131,6 +133,24 @@ public class SQL_Loader {
                 e.printStackTrace();
                 //System.out.println("Keine neue Tabelle Mitarbeiter angelegt.");
             }
+            try{stmt.execute("CREATE TABLE "+StaticData.kuemmert_sich+" ("+
+                    "kuemmert_sichID int NOT NULL AUTO_INCREMENT,"+
+                    "mitarbeiterID int NOT NULL,"+
+                    "pflanzenID int NOT NULL,"+
+                    "FOREIGN KEY(pflanzenID) REFERENCES "+StaticData.pflanze+"(pflanzenID),"+
+                    "FOREIGN KEY (mitarbeiterID) REFERENCES "+StaticData.mitarbieter+"(mitarbeiterID),"+
+                    "PRIMARY KEY (kuemmert_sichID));");
+            }catch(SQLException e){e.printStackTrace();}
+
+            try{stmt.execute("CREATE TABLE "+StaticData.fuettert+" ("+
+                    "fuettertID int NOT NULL AUTO_INCREMENT,"+
+                    "mitarbeiterID int NOT NULL,"+
+                    "tierID int NOT NULL,"+
+                    "FOREIGN KEY(tierID) REFERENCES "+StaticData.tier+"(tierID),"+
+                    "FOREIGN KEY (mitarbeiterID) REFERENCES "+StaticData.mitarbieter+"(mitarbeiterID),"+
+                    "PRIMARY KEY (fuettertID));");
+            }catch(SQLException e){e.printStackTrace();}
+
             /*    stmt.execute("CREATE TABLE "+StaticData.mutationskammer+" (" +
                         "mutationskammerID int NOT NULL AUTO_INCREMENT,"+
                         "mutationskammern int NOT NULL,"+

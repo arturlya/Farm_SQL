@@ -152,4 +152,6 @@ public class Farm extends GraphicalObject {
     public double getFarmGeld() {
         return farmGeld;
     }
+
+    public void removeFarmGeld(double ammount){farmGeld = farmGeld-ammount;}
 }

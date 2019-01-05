@@ -93,9 +93,19 @@ public class Tier extends GraphicalObject implements Lootable{
         }
         if (cooldown == GameTime.tag) {
             cooldown = 0;
+            try{
+                stmt.execute("UPDATE "+StaticData.tier+" SET lootable = 1 WHERE "+id+" = tierID;");
+            }catch(Exception e){System.err.println(e);}
         }
         if(interactCooldown > 0){
             interactCooldown = interactCooldown-1*dt;
+        }
+        if(fuettert.hasRelation(id)){
+            Farm.loot(this);
+            try{
+                stmt.execute("UPDATE "+StaticData.tier+" SET lootable = 0 WHERE "+id+" = tierID;");
+            }catch(Exception e){System.err.println(e);}
+
         }
     }
 
@@ -146,4 +156,6 @@ public class Tier extends GraphicalObject implements Lootable{
     public int getFullyGrown() {
         return fullyGrown;
     }
+
+    public int getID(){return id;}
 }
