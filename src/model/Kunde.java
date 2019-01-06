@@ -14,7 +14,7 @@ public class Kunde extends GraphicalObject {
     private int id,anzahl,geld,nummer;
     private String name,wunsch;
     private Statement stmt;
-    private boolean gekauft,neuerKunde;
+    private boolean abgeschlossen,neuerKunde;
     private Rectangle2D.Double hitboxKauf,hitboxAblehnen;
     private Farm farm;
 
@@ -49,12 +49,12 @@ public class Kunde extends GraphicalObject {
 
     @Override
     public void update(double dt) {
-        if (gekauft) {
-            gekauft = false;
+        if (abgeschlossen) {
+            abgeschlossen = false;
             int random1 = (int)(Math.random()*10);
             if (random1 == 0) wunsch = "Rind";
             if (random1 == 1) wunsch = "Schwein";
-            if (random1 == 2) wunsch = "Huhn";
+            if (random1 == 2) wunsch = "Geflügel";
             if (random1 == 3) wunsch = "Milch";
             if (random1 == 4) wunsch = "Eier";
             if (random1 == 5) wunsch = "Weizen";
@@ -72,7 +72,7 @@ public class Kunde extends GraphicalObject {
     @Override
     public void mouseClicked(MouseEvent e) {
         if (hitboxKauf.intersects(e.getX(),e.getY(),1,1) && farm.lager.getResourceAmmount(wunsch) >= anzahl) {
-            gekauft = true;
+            abgeschlossen = true;
             farm.lager.removeResource(wunsch,anzahl);
             try {
                 stmt.execute("UPDATE "+StaticData.farm+" SET farmGeld = "+(farm.getFarmGeld()+(geld*anzahl))+" WHERE farmID = "+farm.getId()+";");
@@ -81,7 +81,7 @@ public class Kunde extends GraphicalObject {
             }
         }
         if (hitboxAblehnen.intersects(e.getX(),e.getY(),1,1)) {
-            gekauft = true;
+            abgeschlossen = true;
         }
     }
 
@@ -89,8 +89,8 @@ public class Kunde extends GraphicalObject {
         return id;
     }
 
-    public void setGekauft(boolean gekauft) {
-        this.gekauft = gekauft;
+    public void setAbgeschlossen(boolean abgeschlossen) {
+        this.abgeschlossen = abgeschlossen;
     }
 
     public void kundenErstellung(){

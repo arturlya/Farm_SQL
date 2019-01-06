@@ -15,7 +15,7 @@ public class Player extends GraphicalObject {
     private boolean clicked;
     private ProgramController pc;
 
-    public Player(UIController uiController, ProgramController pc){
+    public Player(ProgramController pc){
         this.uiController = uiController;
         this.pc = pc;
         pflanze = new Rectangle2D.Double(300,740,90,30);

@@ -20,8 +20,6 @@ public class SQL_Loader {
 
             try { stmt.execute("DROP TABLE "+StaticData.fuettert+";"); } catch (Exception e) { System.out.println("Tabelle Kümmert sich nicht gelöscht."); }
             try { stmt.execute("DROP TABLE "+StaticData.kuemmert_sich+";"); } catch (Exception e) { System.out.println("Tabelle Kümmert sich nicht gelöscht."); }
-            try { stmt.execute("DROP TABLE "+StaticData.mutationskammer+";"); } catch (Exception e) { System.out.println("Tabelle nicht gelöscht."); }
-            try { stmt.execute("DROP TABLE "+StaticData.wird_gekreuzt+";"); } catch (Exception e) { System.out.println("Tabelle nicht gelöscht."); }
             try { stmt.execute("DROP TABLE " + StaticData.shop + ";"); } catch (Exception e) { System.out.println("Tabelle Shop nicht gelöscht."); }
 
             try { stmt.execute("DROP TABLE " + StaticData.lager + ";"); } catch (Exception e) { System.out.println("Tabelle Lager nicht gelöscht."); }
@@ -125,7 +123,6 @@ public class SQL_Loader {
                     "mitarbeiterID int NOT NULL AUTO_INCREMENT,"+
                     "job varchar(255) NOT NULL,"+
                     "farmID int NOT NULL,"+
-                    "lohn double NOT NULL,"+
                     "PRIMARY KEY(mitarbeiterID),"+
                     "FOREIGN KEY(farmID) REFERENCES "+StaticData.farm+"(farmID)"+
                     ");");
@@ -150,21 +147,6 @@ public class SQL_Loader {
                     "FOREIGN KEY (mitarbeiterID) REFERENCES "+StaticData.mitarbieter+"(mitarbeiterID),"+
                     "PRIMARY KEY (fuettertID));");
             }catch(SQLException e){e.printStackTrace();}
-
-            /*    stmt.execute("CREATE TABLE "+StaticData.mutationskammer+" (" +
-                        "mutationskammerID int NOT NULL AUTO_INCREMENT,"+
-                        "mutationskammern int NOT NULL,"+
-                        "farmName varchar(255) NOT NULL,"+
-                        "farmFelder int NOT NULL,"+
-                        "PRIMARY KEY(farmID)"+
-                        ");");
-                stmt.execute("CREATE TABLE "+StaticData.wird_gekreuzt+" (" +
-                        "kreuzungsID int NOT NULL AUTO_INCREMENT,"+
-                        "tier1ID double NOT NULL,"+
-                        "tier2ID varchar(255) NOT NULL,"+
-                        "mutationskammer int NOT NULL,"+
-                        "PRIMARY KEY(kreuzungsID)"+
-                        ");");*/
 
         }catch(Exception err){err.printStackTrace();}
     }

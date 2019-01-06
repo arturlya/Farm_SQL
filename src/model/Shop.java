@@ -104,7 +104,7 @@ public class Shop extends GraphicalObject{
     }
 
 
-    public void addShopElement(/*String element,String unterart,double preis*/ShopElement shopElement){
+    private void addShopElement(ShopElement shopElement){
         String element = shopElement.getElement();
         String unterart = shopElement.getUnterart();
         double preis = shopElement.getPreis();

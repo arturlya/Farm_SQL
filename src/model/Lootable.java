@@ -1,4 +1,9 @@
 package model;
 
-public interface Lootable {
+import model.framework.GraphicalObject;
+
+public class Lootable extends GraphicalObject {
+
+
+
 }

@@ -3,8 +3,6 @@ package model;
 import control.Farm;
 import control.ProgramController;
 import control.StaticData;
-import model.abitur.datenbanken.mysql.DatabaseConnector;
-import model.abitur.datenstrukturen.List;
 import model.framework.GraphicalObject;
 import view.framework.DrawTool;
 
@@ -12,11 +10,11 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.sql.*;
 
-public class Tier extends GraphicalObject implements Lootable{
+public class Tier extends Lootable{
 
     private Statement stmt;
     private int id = 1,fullyGrown,cooldown;
-    private String fleischArt = "",besonderheiten="";
+    private String fleischart = "",besonderheiten="";
     private double wachstum,wachstumsRate;
     private boolean grown;
     private ProgramController pc;
@@ -29,17 +27,17 @@ public class Tier extends GraphicalObject implements Lootable{
         this.pc = pc;
         switch(unterart){
             case "Kuh":
-                fleischArt = "Rind";
+                fleischart = "Rind";
                 besonderheiten = "Milch";
                 fullyGrown = 30;
                 break;
             case "Huhn":
-                fleischArt = "Geflügel";
+                fleischart = "Geflügel";
                 besonderheiten = "Eier";
                 fullyGrown = 20;
                 break;
             case "Schwein":
-                fleischArt = "Schwein";
+                fleischart = "Schwein";
                 besonderheiten = "leer";
                 fullyGrown = 25;
                 break;
@@ -50,7 +48,7 @@ public class Tier extends GraphicalObject implements Lootable{
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://mysql.webhosting24.1blu.de/db85565x2810214?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "s85565_2810214", "kkgbeste");
             stmt = con.createStatement();
-            stmt.execute("INSERT INTO "+StaticData.tier+"(fleischArt, besonderheiten, wachstumsRate,wachstum,farmID,lootable,cooldown) VALUES ('"+fleischArt+"','"+besonderheiten+"',"+wachstumsRate+","+wachstum+","+farmID+",0,0);");
+            stmt.execute("INSERT INTO "+StaticData.tier+"(fleischArt, besonderheiten, wachstumsRate,wachstum,farmID,lootable,cooldown) VALUES ('"+ fleischart +"','"+besonderheiten+"',"+wachstumsRate+","+wachstum+","+farmID+",0,0);");
             System.out.println("Got new animal");
             ResultSet result = stmt.executeQuery("SELECT * FROM "+StaticData.tier+";");
             int i=0;
@@ -134,7 +132,7 @@ public class Tier extends GraphicalObject implements Lootable{
 
     public String getBesonderheiten(){return besonderheiten;}
 
-    public String getFleischArt(){return fleischArt;}
+    public String getFleischart(){return fleischart;}
 
     public double getWachstum(){return wachstum;}
 

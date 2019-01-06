@@ -9,7 +9,6 @@ import javax.imageio.ImageIO;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
@@ -102,14 +101,14 @@ public class Farm extends GraphicalObject {
     public static void kill(Tier tier){
         int fleischMenge;
         String fleischArt;
-        fleischArt = tier.getFleischArt();
+        fleischArt = tier.getFleischart();
         if(tier.getWachstum() >= tier.getFullyGrown()){
             fleischMenge = (int)(Math.random()*4+4);
-            lager.storageResource(new Resource(fleischArt,fleischMenge));
+            lager.storeResource(new Resource(fleischArt,fleischMenge));
             System.out.println("Tier für "+fleischMenge+" Fleisch getötet");
         }else if(tier.getWachstum() >= tier.getFullyGrown() / 2){
             fleischMenge = (int)(Math.random()*3+1);
-            lager.storageResource(new Resource(fleischArt,fleischMenge));
+            lager.storeResource(new Resource(fleischArt,fleischMenge));
             System.out.println("Tier für "+fleischMenge+" Fleisch getötet");
         }else{
             System.out.println("Das Tier ist zu jung um es zu töten");
@@ -128,14 +127,14 @@ public class Farm extends GraphicalObject {
             if(!((Tier) lootable).getBesonderheiten().equals("leer")){
                 if(((Tier) lootable).isGrown() && ((Tier) lootable).getCooldown() <= 0){
                     ((Tier) lootable).setCooldown(GameTime.tag+7);
-                    lager.storageResource(new Resource(((Tier) lootable).getBesonderheiten(),1));
+                    lager.storeResource(new Resource(((Tier) lootable).getBesonderheiten(),1));
                     System.out.println(((Tier) lootable).getBesonderheiten()+" vom Tier bekommen");
                 }
             }
         }else if(lootable instanceof Pflanze){
             if(((Pflanze) lootable).isReadyToHarvest() && ((Pflanze) lootable).getCooldown() <= 0) {
                 ((Pflanze) lootable).setToStart(GameTime.tag+7);
-                lager.storageResource(new Resource(((Pflanze) lootable).getPflanzenArt(), 1));
+                lager.storeResource(new Resource(((Pflanze) lootable).getPflanzenArt(), 1));
                 System.out.println("Ernte 1 " + ((Pflanze) lootable).getPflanzenArt());
             }
         }

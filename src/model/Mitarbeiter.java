@@ -12,7 +12,6 @@ public class Mitarbeiter extends GraphicalObject {
     private String job;
     private int arbeitsPlatz;
     private int id;
-    private double lohn;
     private boolean working;
     private double workCooldown;
 
@@ -22,8 +21,7 @@ public class Mitarbeiter extends GraphicalObject {
     public Mitarbeiter(String job,int arbeitsPlatz){
         this.job = job;
         this.arbeitsPlatz = arbeitsPlatz;
-        lohn = Math.random()*4+5;
-        datenErstellung(job,arbeitsPlatz,lohn);
+        datenErstellung(job,arbeitsPlatz);
         System.out.println("Added mitarbeiter");
         try {
             ResultSet result = stmt.executeQuery("SELECT * FROM " + StaticData.mitarbieter + ";");
@@ -54,14 +52,14 @@ public class Mitarbeiter extends GraphicalObject {
         }
     }
 
-    private void datenErstellung(String job, int arbeitsplatz, double lohn){
+    private void datenErstellung(String job, int arbeitsplatz){
         try {
             Connection con = DriverManager.getConnection("jdbc:mysql://mysql.webhosting24.1blu.de/db85565x2810214?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC", "s85565_2810214", "kkgbeste");
             stmt = con.createStatement();
         }catch (Exception e) {System.out.println("Keine Connection");}
 
         try {
-            stmt.execute("INSERT INTO "+ StaticData.mitarbieter+" (job,farmID,lohn) VALUES ('" + job + "'," + arbeitsplatz + ","+lohn+");");
+            stmt.execute("INSERT INTO "+ StaticData.mitarbieter+" (job,farmID) VALUES ('" + job + "'," + arbeitsplatz +");");
         }catch (Exception e) {
             e.printStackTrace();
             //System.out.println("Keine Werte für Mitarbeiter");

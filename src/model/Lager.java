@@ -17,7 +17,7 @@ public class Lager {
         lager = new List<>();
     }
 
-    public void storageResource(Resource r){
+    public void storeResource(Resource r){
         boolean added = false;
         lager.toFirst();
 

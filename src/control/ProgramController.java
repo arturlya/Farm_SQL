@@ -15,7 +15,8 @@ public class ProgramController {
     // Referenzen
     private UIController uiController;  // diese Referenz soll auf ein Objekt der Klasse uiController zeigen. Über dieses Objekt wird das Fenster gesteuert.
     private Farm farm;
-    private Kunde kunde1,kunde2,kunde3;
+    private Kunde[] kunden;
+    private int[] takenIDs;
 
     /**
      * Konstruktor
@@ -43,20 +44,39 @@ public class ProgramController {
         Shop shop = new Shop(uiController,farm.getId(),this);
         uiController.drawObject(shop);
         uiController.drawObject(shop);
-        uiController.drawObject(new Player(uiController,this));
-        uiController.drawObject(new Player(uiController,this));
+        uiController.drawObject(new Player(this));
+        uiController.drawObject(new Player(this));
         //Tier tier = new Tier("Kuh",farm.getId());
         //Pflanze pflanze = new Pflanze("Weizen",1);
         //uiController.drawObject(pflanze);
         for (int i = 0; i < 20; i++) {
             uiController.drawObject(new Pflanze("Weizen",1,this));
         }
-        kunde1 = new Kunde(farm,1);
-        kunde2 = new Kunde(farm,2);
-        kunde3 = new Kunde(farm,3);
-        uiController.drawObject(kunde1);
-        uiController.drawObject(kunde2);
-        uiController.drawObject(kunde3);
+        takenIDs = new int[3];
+        kunden = new Kunde[3];
+        for (int i = 0; i < 3; i++) {
+            kunden[i] = new Kunde(farm,i);
+            takenIDs[i] = kunden[i].getId();
+            uiController.drawObject(kunden[i]);
+        }
+        for (int i = 0; i < 3; i++) {
+            if (i == 0) {
+                while (kunden[i].getId() == takenIDs[1] || kunden[i].getId() == takenIDs[2]) {
+                    kunden[i].kundenErstellung();
+                    takenIDs[i] = kunden[i].getId();
+                }
+            }else if (i == 1) {
+                while (kunden[i].getId() == takenIDs[0] || kunden[i].getId() == takenIDs[2]) {
+                    kunden[i].kundenErstellung();
+                    takenIDs[i] = kunden[i].getId();
+                }
+            }else if (i == 2) {
+                while (kunden[i].getId() == takenIDs[0] || kunden[i].getId() == takenIDs[1]) {
+                    kunden[i].kundenErstellung();
+                    takenIDs[i] = kunden[i].getId();
+                }
+            }
+        }
         uiController.drawObject(new GameTime());
         Mitarbeiter mitarbeiter = new Mitarbeiter("Pflanze",farm.getId());
         uiController.drawObject(mitarbeiter);
@@ -69,9 +89,27 @@ public class ProgramController {
      * @param dt Die Zeit in Sekunden, die seit dem letzten Aufruf der Methode vergangen ist.
      */
     public void updateProgram(double dt){
-        if (kunde1.isNeuerKunde()) kunde1.kundenErstellung();
-        if (kunde2.isNeuerKunde()) kunde2 = new Kunde(farm,2);
-        if (kunde3.isNeuerKunde()) kunde3 = new Kunde(farm,3);
+        if (kunden[0].isNeuerKunde()) {
+            kunden[0].kundenErstellung();
+            while (kunden[0].getId() == takenIDs[1] || kunden[0].getId() == takenIDs[2]) {
+                kunden[0].kundenErstellung();
+                takenIDs[0] = kunden[0].getId();
+            }
+        }
+        if (kunden[1].isNeuerKunde()){
+            kunden[1].kundenErstellung();
+            while (kunden[1].getId() == takenIDs[0] || kunden[1].getId() == takenIDs[2]) {
+                kunden[1].kundenErstellung();
+                takenIDs[1] = kunden[1].getId();
+            }
+        }
+        if (kunden[2].isNeuerKunde()){
+            kunden[2].kundenErstellung();
+            while (kunden[2].getId() == takenIDs[0] || kunden[2].getId() == takenIDs[1]) {
+                kunden[2].kundenErstellung();
+                takenIDs[2] = kunden[2].getId();
+            }
+        }
     }
 
     public int getCurrentPanel() {

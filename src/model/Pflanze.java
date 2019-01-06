@@ -12,7 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Rectangle2D;
 import java.sql.*;
 
-public class Pflanze extends GraphicalObject implements Lootable{
+public class Pflanze extends Lootable{
 
     private Statement stmt;
     private int id,feldbelegung,fullyGrown;
@@ -57,7 +57,7 @@ public class Pflanze extends GraphicalObject implements Lootable{
             try{
                 stmt.execute("UPDATE "+StaticData.pflanze+" SET readyToHarvest = 0 WHERE "+id+" = pflanzenID;");
             }catch(Exception e){System.err.println(e);}
-            wachstum = 7;
+            wachstum = 5;
         }
     }
 
@@ -70,7 +70,7 @@ public class Pflanze extends GraphicalObject implements Lootable{
                     try{
                         stmt.execute("UPDATE "+StaticData.pflanze+" SET readyToHarvest = 0 WHERE "+id+" = pflanzenID;");
                     }catch(Exception err){System.err.println(err);}
-                    wachstum = 7;
+                    wachstum = 5;
                 }
             }
         }
